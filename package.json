@@ -1,0 +1,20 @@
+{
+  "name": "xuser",
+  "version": "0.0.1",
+  "description": "User management service. OAuth2 compatible authentication built in.",
+  "keywords": [
+    "user",
+    "authentication",
+    "rbac",
+    "log",
+  ],
+  "author": "R. Saltuk Alakus <saltukalakus@gmail.com>",
+  "main": "./lib/xuser.js",
+  "dependencies": {
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/saltukalakus/xuser.git"
+  }
+}

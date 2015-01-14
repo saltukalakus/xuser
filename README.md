@@ -1,2 +1,2 @@
 # key-store
-Key store for API authentication. OAuth2 compatible.
+User management service. OAuth2 compatible authentication built in.
