@@ -6,7 +6,7 @@
     "user",
     "authentication",
     "rbac",
-    "log",
+    "log"
   ],
   "author": "R. Saltuk Alakus <saltukalakus@gmail.com>",
   "main": "./lib/xuser.js",
@@ -16,5 +16,29 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/saltukalakus/xuser.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "auth",
+    "tokens",
+    "REST"
+  ],
+  "dependencies": {
+    "express": "~3.3.4",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
+    "mongoose": "~3.8.1",
+    "passport-local-mongoose": "~0.2.5",
+    "mocha": "~1.14.0",
+    "chai": "~1.8.1",
+    "should": "~2.1.0",
+    "install": "~0.1.7",
+    "npm": "~1.3.15",
+    "mongodb": "~1.3.19",
+    "jwt-simple": "~0.1.0",
+    "ejs": "~0.8.5",
+    "underscore": "~1.5.2",
+    "crypto": "0.0.3"
   }
 }
