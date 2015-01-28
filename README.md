@@ -9,6 +9,8 @@
 References
 ==========
 
-Initial starting point of the project; Not forked due to complete redesing plan.
+References for the project; Not forked due to complete redesign.
 
-https://github.com/roblevintennis/passport-api-tokens
+-) https://github.com/roblevintennis/passport-api-tokens
+
+-) http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local
