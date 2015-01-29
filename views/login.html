@@ -1,35 +1,32 @@
-<!doctype html>
-<html>
-<head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+{% extends "./base.html" %}
+
+{% block head-css %}
+    {% parent %}
+    <style>
+        body 		{ padding-top:80px; word-wrap:break-word; }
+    </style>
     <link rel="stylesheet" href="css/login.css">
-</head>
-<body>
+{% endblock %}
 
+{% block body %}
 <div class="container">
-
-
     <div class="omb_login">
-        <h3 class="omb_authTitle ">Login</h3>
-
         <!-- SOCIAL LOGIN -->
         <div class="row omb_row-sm-offset-3 omb_socialButtons">
             <div class="col-xs-4 col-sm-2">
-                <a href="#" class="btn btn-lg btn-block omb_btn-facebook">
+                <a href="/auth/facebook" class="btn btn-lg btn-block omb_btn-facebook">
                     <i class="fa fa-facebook visible-xs"></i>
                     <span class="hidden-xs">Facebook</span>
                 </a>
             </div>
             <div class="col-xs-4 col-sm-2">
-                <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+                <a href="/auth/twitter" class="btn btn-lg btn-block omb_btn-twitter">
                     <i class="fa fa-twitter visible-xs"></i>
                     <span class="hidden-xs">Twitter</span>
                 </a>
             </div>
             <div class="col-xs-4 col-sm-2">
-                <a href="#" class="btn btn-lg btn-block omb_btn-google">
+                <a href="/auth/google" class="btn btn-lg btn-block omb_btn-google">
                     <i class="fa fa-google-plus visible-xs"></i>
                     <span class="hidden-xs">Google+</span>
                 </a>
@@ -81,6 +78,4 @@
         </div>
     </div>
 </div>
-
-</body>
-</html>
+{% endblock %}
