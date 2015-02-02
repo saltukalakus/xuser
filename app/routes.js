@@ -1,3 +1,5 @@
+var User       = require('../app/models/user');
+
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
@@ -149,11 +151,19 @@ module.exports = function(app, passport) {
 	// local -----------------------------------
 	app.get('/unlink/local', isLoggedIn, function(req, res) {
 		var user            = req.user;
-		user.local.email    = undefined;
-		user.local.password = undefined;
-		user.save(function(err) {
-			res.redirect('/profile');
-		});
+
+        user.invalidateUserToken(User, user.local.email, function(err, usr){
+            if (err) {
+                console.log(err);
+            }
+            user.local.email    = undefined;
+            user.local.password = undefined;
+            //user.local.token    = undefined;
+
+            user.save(function(err) {
+                res.redirect('/profile');
+            });
+        } );
 	});
 
 	// facebook -------------------------------

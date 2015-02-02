@@ -102,10 +102,14 @@ module.exports = function(passport) {
                             if (err)
                                 return done(err);
 
-                            return done(null, newUser);
+                            newUser.createUserToken(User, email, function(err, user){
+                                if (err)
+                                    return done(err);
+                                else
+                                    return done(null, newUser);
+                            });
                         });
                     }
-
                 });
             // if the user is logged in but has no local account...
             } else if ( !req.user.local.email ) {
