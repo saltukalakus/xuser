@@ -20,7 +20,7 @@ var sessionConf  = require('./config/session.js');
 // configuration ===============================================================
 mongoose.connect(dbConf.url); // connect to our database
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./app/mwconf/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // set .swg as the default extension
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/app/views');
 
 // required for passport
 app.use(session({ secret: sessionConf.secret })); // session secret
