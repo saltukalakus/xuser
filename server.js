@@ -1,7 +1,6 @@
 // server.js
 
 // set up ======================================================================
-// get all the tools we need
 var express  = require('express');
 var app      = express();
 var swig     = require('swig');
@@ -15,10 +14,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var configDB = require('./config/database.js');
+var dbConf       = require('./config/database.js');
+var sessionConf  = require('./config/session.js');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(dbConf.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -34,7 +34,7 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: sessionConf.secret })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session

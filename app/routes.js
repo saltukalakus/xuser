@@ -1,4 +1,4 @@
-var User       = require('../app/models/user');
+var Token       = require('../app/models/token');
 
 module.exports = function(app, passport) {
 
@@ -151,19 +151,11 @@ module.exports = function(app, passport) {
 	// local -----------------------------------
 	app.get('/unlink/local', isLoggedIn, function(req, res) {
 		var user            = req.user;
-
-        User.invalidateUserToken(user.local.email, function(err, usr){
-            if (err) {
-                console.log(err);
-            }
-            user.local.email    = undefined;
-            user.local.password = undefined;
-            //user.local.token    = undefined;
-
-            user.save(function(err) {
-                res.redirect('/profile');
-            });
-        } );
+        user.local.email    = undefined;
+        user.local.password = undefined;
+        user.save(function(err) {
+             res.redirect('/profile');
+        });
 	});
 
 	// facebook -------------------------------
@@ -193,7 +185,22 @@ module.exports = function(app, passport) {
 		});
 	});
 
+    // =============================================================================
+    // Token API                                                       =============
+    // =============================================================================
 
+    app.get('/token', isLoggedIn, function(req, res) {
+        console.log("This is the e-mail: " + req.user.local.email);
+        Token.createToken(req.user.local.email, function(err, token){
+            if (err) {
+                console.log(err);
+                res.redirect('/');
+            }
+            res.render('token.html', {
+                token : token
+            });
+        });
+    });
 };
 
 // route middleware to ensure user is logged in

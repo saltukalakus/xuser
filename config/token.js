@@ -11,5 +11,6 @@ module.exports = {
      * 1 week: 604800000
      */
     'ttl': 3600000, //1 hour
-    'resetTokenExpiresMinutes': 20 //20 minutes later
+    'resetTokenExpiresMinutes': 20, //20 minutes later,
+    'tokenSecret': "thisistokensecret"
 };
