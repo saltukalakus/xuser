@@ -1,4 +1,4 @@
-var Token       = require('../app/models/token');
+var Token       = require('../models/tokenModel');
 
 module.exports = function(app, passport) {
 

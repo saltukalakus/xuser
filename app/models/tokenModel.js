@@ -1,19 +1,7 @@
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
 var tokenConfig = require('../../config/token');
-
-// define database schema for tokens
-var tokenSchema = mongoose.Schema({
-    email: {type: String},
-    token: {type: String},
-    date_created: {type: Date, default: Date.now}
-});
-
-tokenSchema.methods.hasExpired= function(created) {
-    var now = new Date();
-    var diff = (now.getTime() - created);
-    return diff > tokenConfig.ttl;
-};
+var tokenSchema = require('./tokenSchema');
 
 var TokenModel = mongoose.model('Token', tokenSchema);
 
