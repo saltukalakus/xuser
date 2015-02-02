@@ -152,7 +152,7 @@ module.exports = function(app, passport) {
 	app.get('/unlink/local', isLoggedIn, function(req, res) {
 		var user            = req.user;
 
-        user.invalidateUserToken(User, user.local.email, function(err, usr){
+        User.invalidateUserToken(user.local.email, function(err, usr){
             if (err) {
                 console.log(err);
             }
