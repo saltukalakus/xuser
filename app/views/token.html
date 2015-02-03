@@ -13,6 +13,7 @@
 
     <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Token Page</h1>
+        <a href="/profile" class="btn btn-default btn-sm">Profile View</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
@@ -28,10 +29,15 @@
                     <strong>token</strong>: {{ token.token }}<br>
                 </p>
 
-                <a href="/unlink/local" class="btn btn-default">Test Token</a>
+                <a href="/api/test" class="testToken btn btn-default">Test Token</a>
 
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block footer-js %}
+    {% parent %}
+    <script type="text/javascript" src="js/token.js"></script>
 {% endblock %}

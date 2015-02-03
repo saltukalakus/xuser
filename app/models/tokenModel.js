@@ -13,7 +13,7 @@ TokenModel.decode = function(data) {
     return jwt.decode(data, tokenConfig.tokenSecret);
 };
 
-TokenModel.findUserByToken = function(token, cb) {
+TokenModel.findUser = function(token, cb) {
     this.findOne({'token': token}, function(err, usr) {
         if(err || !usr) {
             cb(err, null);
