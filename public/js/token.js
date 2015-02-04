@@ -113,7 +113,7 @@ $('document').ready(function() {
                     if (data.error) {
                         alert("Error: " + data.error);
                     } else {
-                        console.log(data.user);
+                        console.log(JSON.stringify(data));
                         alert("Token callback worked! Check console");
                     }
                 }
@@ -122,4 +122,10 @@ $('document').ready(function() {
             alert("No token");
         }
     });
+
+    /////////////////////////////////////////////////////////////////
+    // Store the token when page loads //////////////////////////////
+    /////////////////////////////////////////////////////////////////
+    Store.setUser({token: $('#hiddenToken').text()});
+    console.log("This is the hidden token: "  + Store.getToken());
 });

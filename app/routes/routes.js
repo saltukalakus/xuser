@@ -185,10 +185,6 @@ module.exports = function(app, passport) {
 		});
 	});
 
-    // =============================================================================
-    // Token API                                                       =============
-    // =============================================================================
-
     app.get('/token', isLoggedIn, function(req, res) {
         console.log("This is the e-mail: " + req.user.local.email);
         Token.createToken(req.user.local.email, function(err, token){
@@ -202,36 +198,27 @@ module.exports = function(app, passport) {
         });
     });
 
+    // =============================================================================
+    // Token API                                                       =============
+    // =============================================================================
+
     app.get('/api/test', function(req, res) {
+        console.log(req);
         var incomingToken = req.headers.token;
         console.log('incomingToken: ' + incomingToken);
-        var decoded = Token.decode(incomingToken);
-        //Now do a lookup on that email in mongodb ... if exists it's a real user
-        if (decoded && decoded.email) {
-            Token.findUser(decoded.email, incomingToken, function(err, user) {
-                if (err) {
-                    console.log(err);
-                    res.json({error: 'Issue finding user.'});
-                } else {
-                    if (Token.hasExpired(user.token.date_created)) {
-                        console.log("Token expired...TODO: Add renew token functionality.");
-                        res.json({error: 'Token expired. You need to log in again.'});
-                    } else {
-                        res.json({
-                            user: {
-                                email: user.email,
-                                full_name: user.full_name,
-                                token: user.token.token,
-                                message: "This is just a simulation of an API endpoint; and we wouldn't normally return the token in the http response...doing so for test purposes only :)"
-                            }
-                        });
+        Token.findUserByToken(incomingToken, function(err, user) {
+            if (err) {
+                console.log(err);
+                res.json({error: err});
+            } else {
+                res.json({
+                    log: {
+                        user: user,
+                        message: "This is just a simulation of an API endpoint"
                     }
-                }
-            });
-        } else {
-            console.log('Whoa! Couldn\'t even decode incoming token!');
-            res.json({error: 'Issue decoding incoming token.'});
-        }
+                });
+            }
+        });
     });
 };
 

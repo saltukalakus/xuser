@@ -25,12 +25,11 @@
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                 <p>
-                    <strong>email</strong>: {{ token.email }}<br>
-                    <strong>token</strong>: {{ token.token }}<br>
+                    <strong>email</strong>: {{ token.email }}
                 </p>
+                <p hidden="true" id="hiddenToken">{{token.token}}</p>
 
-                <a href="/api/test" class="testToken btn btn-default">Test Token</a>
-
+                <button class="testToken btn btn-default" type="button">Test Token</button>
             </div>
         </div>
     </div>
@@ -39,5 +38,8 @@
 
 {% block footer-js %}
     {% parent %}
+    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script> -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.js"></script>
+
     <script type="text/javascript" src="js/token.js"></script>
 {% endblock %}
