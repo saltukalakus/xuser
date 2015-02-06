@@ -123,9 +123,54 @@ $('document').ready(function() {
         }
     });
 
+    $('.generateToken').on("click", function(e) {
+        $.ajax({
+            type: "GET",
+            cache: false,
+            dataType: "json",
+            url: "/api/token/generate",
+            success: function(data) {
+                if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    console.log(JSON.stringify(data));
+                    Store.setUser(data);
+                    console.log("This is the token: "  + Store.getToken());
+                    $("#sessionToken").text(data.token);
+                    $("#sessionEmail").text(data.email);
+                }
+            }
+        });
+    });
+
+    $('.invalidateToken').on("click", function(e) {
+        var token = Store.getToken();
+        Store.removeUser();
+        if (token) {
+            $.ajax({
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                url: "/api/token/invalidate",
+                headers: {
+                    token: token
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.error) {
+                        alert("Issue removing token.");
+                    } else {
+                        alert("Token removed.");
+                    }
+                }
+            });
+        } else {
+            alert("No token");
+        }
+    });
+
     /////////////////////////////////////////////////////////////////
     // Store the token when page loads //////////////////////////////
     /////////////////////////////////////////////////////////////////
-    Store.setUser({token: $('#hiddenToken').text()});
     console.log("This is the hidden token: "  + Store.getToken());
 });

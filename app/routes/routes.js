@@ -2,9 +2,9 @@ var Token       = require('../models/tokenModel');
 
 module.exports = function(app, passport) {
 
-// normal routes ===============================================================
+// Normal routes ===============================================================
 
-	// show the home page (will also have our login links)
+	// Show the home page (will also have our login links)
 	app.get('/', function(req, res) {
 		res.render('login.html');
 	});
@@ -21,6 +21,11 @@ module.exports = function(app, passport) {
 		req.logout();
 		res.redirect('/');
 	});
+
+    // Token test page=======================
+    app.get('/token', isLoggedIn, function(req, res) {
+        res.render('token.html');
+    });
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -185,22 +190,41 @@ module.exports = function(app, passport) {
 		});
 	});
 
-    app.get('/token', isLoggedIn, function(req, res) {
+    // =============================================================================
+    // Token API                                                       =============
+    // =============================================================================
+
+    // Authenticates with the session cookie. This api should be called after login
+    // in a web applications.
+    app.get('/api/token/generate', isLoggedIn, function(req, res) {
         console.log("This is the e-mail: " + req.user.local.email);
         Token.createToken(req.user.local.email, function(err, token){
             if (err) {
                 console.log(err);
-                res.redirect('/');
+                res.json({error: err});
+            } else {
+                res.json({
+                        email: token.email,
+                        token: token.token
+                });
             }
-            res.render('token.html', {
-                token : token
-            });
         });
     });
 
-    // =============================================================================
-    // Token API                                                       =============
-    // =============================================================================
+    app.get('/api/token/invalidate', function(req, res) {
+        Token.invalidateToken(req.user.local.email, function(err, token){
+            if (err) {
+                console.log(err);
+                res.json({error: err});
+            } else {
+                res.json({
+                    email: token.email,
+                    token: token.token
+                });
+            }
+        });
+    });
+
 
     app.get('/api/test', function(req, res) {
         console.log(req);

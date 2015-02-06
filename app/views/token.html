@@ -25,10 +25,14 @@
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                 <p>
-                    <strong>email</strong>: {{ token.email }}
+                    <strong>email</strong>: <div id="sessionEmail">{{ token.email }}</div>
                 </p>
-                <p hidden="true" id="hiddenToken">{{token.token}}</p>
+                <p>
+                    <strong>token</strong>: <div id="sessionToken">{{ token.token }}</div>
+                </p>
 
+                <button class="generateToken btn btn-default" type="button">Generate Token</button>
+                <button class="invalidateToken btn btn-default" type="button">Invalidate Token</button>
                 <button class="testToken btn btn-default" type="button">Test Token</button>
             </div>
         </div>

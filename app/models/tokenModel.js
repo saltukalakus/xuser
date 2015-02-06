@@ -32,32 +32,32 @@ TokenModel.findUserByToken = function(token, done) {
 
 TokenModel.createToken = function(email, done) {
     self = this;
-    this.findOne({'email': email}, function(err, token) {
+    this.findOne({'email': email}, function(err, user) {
         if(err || email === "") {
             console.log('err');
             done(true, null);
         }
-        if (token){
+        if (user && user.token !==null){
             console.log("token found!");
-            done(false, token);//token object, in turn
+            done(false, user);//token object, in turn
         } else {
-            token = new TokenModel();
-            token.email = email;
-            token.date_created = Date.now();
-            token.token =  self.encode({'email': token.email, 'date_created': token.date_created });
+            user = new TokenModel();
+            user.email = email;
+            user.date_created = Date.now();
+            user.token =  self.encode({'email': user.email, 'date_created': user.date_created });
 
-            token.save(function(err, usr) {
+            user.save(function(err) {
                 if (err) {
                     done(err, null);
                 } else {
-                    done(false, token);//token object, in turn
+                    done(false, user);//token object, in turn
                 }
             });
         }
     });
 };
 
-TokenModel.invalidateUserToken = function(email, done) {
+TokenModel.invalidateToken = function(email, done) {
     this.findOne({'email': email}, function(err, usr) {
         if(err || !usr) {
             console.log('err');
