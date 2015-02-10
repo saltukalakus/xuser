@@ -1,5 +1,14 @@
 {
-  "name": "node-authentication",
+  "name": "xuser",
+  "version": "0.0.2",
+  "description": "Fork of yamljs (0.2.1) for a purpose. See README for details.",
+  "keywords": [
+    "User managent",
+    "RBAC",
+    "Token",
+    "JWT"
+    ],
+  "author": "R. Saltuk Alakus <saltukalakus@gmail.com>",
   "main": "server.js",
   "dependencies": {
     "express": "~4.0.0",
@@ -20,11 +29,17 @@
     "jwt-simple": "~0.2.0"
   },
   "scripts": {
-      "broserify": "browserify ./app/f/token.js > ./public/js/",
-      "unit": "tape test/*",
-      "test": "npm run lint && npm run unit"
+      "lint": "jshint ./app/**.js",
+      "jsbuild": "browserify ./app/fe/control/token.js > ./public/js/build/token.js",
+      "build": "npm run jsbuild"
   },
   "devDependencies": {
-    "browserify": "~8.1.3"
+      "browserify": "latest",
+      "gulp": "latest",
+      "gulp-jshint": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/saltukalakus/xuser.git"
   }
 }
