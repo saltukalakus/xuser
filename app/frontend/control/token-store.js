@@ -1,4 +1,4 @@
-var store = require("./ext/store+json2-1.3.17.min.js");
+var store = require("./../../../public/js/ext/store+json2-1.3.17.min.js");
 
 module.exports.setToken = function(token) {
     store.set('token-token', token);

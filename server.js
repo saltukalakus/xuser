@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // set .swg as the default extension
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/app/views');
+app.set('views', __dirname + '/app/frontend/views');
 
 // required for passport
 app.use(session({ secret: sessionConf.secret })); // session secret

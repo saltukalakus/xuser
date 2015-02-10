@@ -18,5 +18,13 @@
     "express-session": "~1.0.0",
     "swig": "~1.4.2",
     "jwt-simple": "~0.2.0"
+  },
+  "scripts": {
+      "broserify": "browserify ./app/f/token.js > ./public/js/",
+      "unit": "tape test/*",
+      "test": "npm run lint && npm run unit"
+  },
+  "devDependencies": {
+    "browserify": "~8.1.3"
   }
 }
