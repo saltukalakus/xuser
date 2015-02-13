@@ -29,14 +29,13 @@
     "jwt-simple": "~0.2.0"
   },
   "scripts": {
-      "lint": "jshint ./app/**.js",
-      "jsbuild": "browserify ./app/fe/control/token.js > ./public/js/build/token.js",
-      "build": "npm run jsbuild"
+      "server": "nodejs server.js"
   },
   "devDependencies": {
       "browserify": "latest",
       "gulp": "latest",
-      "gulp-jshint": "latest"
+      "gulp-jshint": "latest",
+      "gulp-browserify": "latest"
   },
   "repository": {
     "type": "git",
