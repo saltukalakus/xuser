@@ -1,7 +1,7 @@
 #!/bin/bash
-
-sudo apt-get install nginx
-sudo apt-add-repository ppa:vbernat/haproxy-1.5
-sudo apt-get update
-sudo apt-get install haproxy
-sudo mv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
+# TODO: force run as root
+apt-get install nginx
+apt-add-repository ppa:vbernat/haproxy-1.5
+apt-get update
+apt-get install haproxy
+mv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
