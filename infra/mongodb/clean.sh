@@ -3,7 +3,7 @@
 # Force run as root
 if [ $(id -u) != "0" ]
     then
-        sudo "$0" "$@"  # Modified as suggested below.
+        sudo "$0" "$@"
         exit $?
 fi
 
