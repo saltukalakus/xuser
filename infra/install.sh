@@ -40,13 +40,15 @@ mv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
 cp ./haproxy/haproxy.cfg /etc/haproxy
 
 # Nginx conf setup
-cp -v ./nginx/* /etc/nginx/sites-available
-ln -s /etc/nginx/sites-enabled/nginx-conf /etc/nginx/sites-available/nginx-conf
-ln -s /etc/nginx/sites-enabled/nginx-conf2 /etc/nginx/sites-available/nginx-conf2
+cp -v ./nginx/nginx-* /etc/nginx/sites-available
+cp -v ./nginx/nginx.conf /etc/nginx
+ln -s /etc/nginx/sites-enabled/nginx-node1 /etc/nginx/sites-available/nginx-node1
+ln -s /etc/nginx/sites-enabled/nginx-node2 /etc/nginx/sites-available/nginx-node2
 mv /etc/init.d/nginx ~ #  Nginx is controlled by upstart
 
 # Copy upstart files
 cp -v ./upstart/* /etc/init
+initctl reload-configuration
 
 # SSL keys
 pushd .
@@ -56,9 +58,11 @@ popd
 
 # Restart all
 stop xuser
+stop mongodb
 stop nginx
 stop haproxy
-start xuser
-start nginx
-start haproxy
 
+start haproxy
+start nginx
+start mongodb
+start xuser
