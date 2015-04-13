@@ -7,7 +7,7 @@
     "RBAC",
     "Token",
     "JWT"
-    ],
+  ],
   "author": "R. Saltuk Alakus <saltukalakus@gmail.com>",
   "main": "server.js",
   "dependencies": {
@@ -26,16 +26,17 @@
     "method-override": "~1.0.0",
     "express-session": "~1.0.0",
     "swig": "~1.4.2",
-    "jwt-simple": "~0.2.0"
+    "jwt-simple": "~0.2.0",
+    "connect-redis": "~2.2.0"
   },
   "scripts": {
-      "server": "nodejs server.js"
+    "server": "nodejs server.js"
   },
   "devDependencies": {
-      "browserify": "latest",
-      "gulp": "latest",
-      "gulp-jshint": "latest",
-      "gulp-browserify": "latest"
+    "browserify": "latest",
+    "gulp": "latest",
+    "gulp-jshint": "latest",
+    "gulp-browserify": "latest"
   },
   "repository": {
     "type": "git",

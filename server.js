@@ -13,6 +13,7 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
+var RedisStore   = require('connect-redis')(session);
 
 var dbConf       = require('./config/database.js');
 var sessionConf  = require('./config/session.js');
@@ -34,7 +35,13 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/app/fe/views');
 
 // required for passport
-app.use(session({ secret: sessionConf.secret })); // session secret
+var options = {host:"127.0.0.1",
+    port: 6379};
+app.use(session({
+    store: new RedisStore(options),
+    secret: sessionConf.secret
+}));
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session

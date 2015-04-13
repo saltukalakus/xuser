@@ -34,6 +34,10 @@ pushd .
 cd ./mongodb
 ./init.sh
 popd
+# Redis
+add-apt-repository -y ppa:rwky/redis
+apt-get update
+apt-get install -y redis-server
 
 # Haproxy conf setup
 mv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
