@@ -41,14 +41,18 @@ apt-get install -y redis-server
 
 # Haproxy conf setup
 mv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
-cp ./haproxy/haproxy.cfg /etc/haproxy
+cp -fv ./haproxy/haproxy.cfg /etc/haproxy
 
 # Nginx conf setup
-cp -v ./nginx/nginx-* /etc/nginx/sites-available
-cp -v ./nginx/nginx.conf /etc/nginx
+cp -fv ./nginx/nginx-* /etc/nginx/sites-available
+cp -fv ./nginx/nginx.conf /etc/nginx
 ln -s /etc/nginx/sites-enabled/nginx-node1 /etc/nginx/sites-available/nginx-node1
 ln -s /etc/nginx/sites-enabled/nginx-node2 /etc/nginx/sites-available/nginx-node2
 mv /etc/init.d/nginx ~ #  Nginx is controlled by upstart
+
+# Redis conf setup
+mkdir -p /var/log/redis
+cp -fv ./redis/*.conf /etc/re
 
 # Copy upstart files
 cp -v ./upstart/* /etc/init
