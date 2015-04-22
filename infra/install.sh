@@ -53,6 +53,7 @@ mv /etc/init.d/nginx ~ #  Nginx is controlled by upstart
 # Redis conf setup
 mkdir -p /var/log/redis
 cp -fv ./redis/*.conf /etc/redis
+chown redis:redis /etc/redis/*.conf
 
 # Copy upstart files
 cp -v ./upstart/* /etc/init
