@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var RedisStore   = require('connect-redis')(session);
+var Redis        = require('ioredis');
 
 var dbConf       = require('./config/database.js');
 var sessionConf  = require('./config/session.js');
@@ -34,11 +35,13 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/app/fe/views');
 
-// required for passport
-var options = {host:"127.0.0.1",
-    port: 6379};
+// redis options
+var options = {sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 },  { host: 'localhost', port: 26381 }],
+    name: 'mymaster'};
+
+// required for passport sessions
 app.use(session({
-    store: new RedisStore(options),
+    store: new RedisStore({ client: new Redis(options) }),
     secret: sessionConf.secret
 }));
 
