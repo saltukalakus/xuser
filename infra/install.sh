@@ -11,8 +11,20 @@ fi
 # ===============
 
 # NodeJs
+sudo apt-get update
+sudo apt-get install nodejs
 apt-get -y install nodejs
 apt-get -y install npm
+npm install gulp -g
+
+# Install project npms
+pushd .
+cd ..
+npm install
+gulp build
+gulp product
+popd
+
 # Nginx
 apt-get -y install nginx
 # Haproxy
@@ -46,8 +58,9 @@ cp -fv ./haproxy/haproxy.cfg /etc/haproxy
 # Nginx conf setup
 cp -fv ./nginx/nginx-* /etc/nginx/sites-available
 cp -fv ./nginx/nginx.conf /etc/nginx
-ln -s /etc/nginx/sites-enabled/nginx-node1 /etc/nginx/sites-available/nginx-node1
-ln -s /etc/nginx/sites-enabled/nginx-node2 /etc/nginx/sites-available/nginx-node2
+rm -Rfv /etc/nginx/sites-enabled/*
+ln -s /etc/nginx/sites-available/nginx-node1 /etc/nginx/sites-enabled/nginx-node1
+ln -s /etc/nginx/sites-available/nginx-node2 /etc/nginx/sites-enabled/nginx-node2
 mv /etc/init.d/nginx ~ #  Nginx is controlled by upstart
 
 # Redis conf setup

@@ -32,3 +32,6 @@ mongo 127.0.0.1:27001/admin init.js
 pkill -9 mongod
 
 chown mongodb:mongodb -Rf /data-mongodb
+
+# Remove the socket temporary files
+rm -Rf /tmp/mongodb*
