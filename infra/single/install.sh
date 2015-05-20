@@ -77,7 +77,7 @@ mongodb hard nproc  64000 \n"
 # Generate the initial mongo data set
 pushd .
 cd ./mongodb
-./init.sh
+. init.sh
 popd
 # Redis
 add-apt-repository -y ppa:rwky/redis
@@ -121,3 +121,11 @@ stop haproxy
 #start sentinel
 #start mongod
 #start nodejs
+
+echo "Hey! Don't forget to install SSL keys!"
+read -p "Now I need to reboot. Ok for you? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    reboot -h now
+fi
