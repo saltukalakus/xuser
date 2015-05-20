@@ -1,4 +1,4 @@
-Infrastructure
+Infrastructure for single VM installation
 ==============
 
 * Haproxy is configured as proxy and load balancer in front of Node and Nginx servers. Running on port 80 and 443

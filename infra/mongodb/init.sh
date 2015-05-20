@@ -7,29 +7,29 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
+# remove password for mongodb user
+passwd mongodb -d
+
 # Kill all running mongod processes
 pkill -9 mongod
 
 rm -Rf /data-mongodb
 mkdir -p /data-mongodb/
+cp -v start.sh stop.sh init.js /data-mongodb
+cp -v *.conf /data-mongodb
+chmod 755 /data-mongodb/start.sh
+chmod 755 /data-mongodb/stop.sh
 
-mkdir -p /data-mongodb/xuser-1
-cp -v primary.conf /data-mongodb/xuser-1
+mkdir -p /data-mongodb/rs0-1
+mkdir -p /data-mongodb/rs0-2
+mkdir -p /data-mongodb/rs0-3
+mkdir -p /var/log/mongodb
 
-mkdir -p /data-mongodb/xuser-2
-cp -v secondary.conf /data-mongodb/xuser-2
+ln -s /data-mongodb/start.sh /usr/local/bin/mongodb-start.sh
+ln -s /data-mongodb/stop.sh /usr/local/bin/mongodb-stop.sh
 
-mkdir -p /data-mongodb/backup
-cp -v backup.conf /data-mongodb/backup
-
-# First time configuration script, this needs to be executed once.
-mongod -f ./primary.conf
-mongod -f ./secondary.conf
-mongod -f ./backup.conf
-mongo 127.0.0.1:27001/admin init.js
-
-# Kill all running mongod processes
-pkill -9 mongod
+mongodb-start.sh
+mongodb-stop.sh
 
 chown mongodb:mongodb -Rf /data-mongodb
 
