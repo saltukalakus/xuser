@@ -1,5 +1,8 @@
 """Configuration Append Helper
 
+Searches a configuration block with a given KEY. Removes the old conf if exists and
+appends the new one to the end of the file.
+
 Usage:
   conf_append.py [--file=<kn>] [--key=<kn>] [--append=<kn>]
 

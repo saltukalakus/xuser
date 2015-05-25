@@ -6,6 +6,6 @@ server {
 	server_name localhost;
 
 	location / {
-        root /home/saltuka/Git/xuser/public;
+        root #AUTO_REPLACE_PR_PATH/public;
 	}
 }

@@ -25,10 +25,13 @@ ln -s /usr/bin/nodejs /usr/bin/node
 # Install project npms
 pushd .
 cd ../..
+PROJECT_PATH=$(pwd)
 npm install
 gulp build
 gulp product
 popd
+echo "Project path:"
+echo $PROJECT_PATH
 
 # Nginx
 apt-get -y install nginx
@@ -96,6 +99,13 @@ cp -fv ./nginx/nginx.conf /etc/nginx
 rm -Rfv /etc/nginx/sites-enabled/*
 ln -s /etc/nginx/sites-available/nginx-node1 /etc/nginx/sites-enabled/nginx-node1
 ln -s /etc/nginx/sites-available/nginx-node2 /etc/nginx/sites-enabled/nginx-node2
+python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node1 \
+                                  --search="#AUTO_REPLACE_PR_PATH" \
+                                  --replace=$PROJECT_PATH
+python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node2 \
+                                  --search="#AUTO_REPLACE_PR_PATH" \
+                                  --replace=$PROJECT_PATH
+
 mv /etc/init.d/nginx ~ #  Nginx is controlled by upstart
 
 # Redis conf setup
@@ -105,6 +115,13 @@ chown redis:redis /etc/redis/*.conf
 
 # Copy upstart files
 cp -v ./upstart/* /etc/init
+python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
+                                  --search="#AUTO_REPLACE_COOKIE_SECRET" \
+                                  --replace="42rerwejfkj9434cds5ewejd"
+python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
+                                  --search="#AUTO_REPLACE_PR_PATH" \
+                                  --replace=$PROJECT_PATH
+
 initctl reload-configuration
 
 # Stop all if already working
@@ -115,12 +132,12 @@ stop redis
 stop nginx
 stop haproxy
 
-#start haproxy
-#start nginx
-#start redis
-#start sentinel
-#start mongod
-#start nodejs
+start haproxy
+start nginx
+start redis
+start sentinel
+start mongod
+start nodejs
 
 echo "Hey! Don't forget to install SSL keys!"
 read -p "Now I need to reboot. Ok for you? " -n 1 -r
