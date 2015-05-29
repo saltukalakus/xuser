@@ -20,7 +20,7 @@ apt-get -y install nodejs
 apt-get -y install npm
 npm install gulp -g
 mkdir -p /var/log/nodejs
-ln -s /usr/bin/nodejs /usr/bin/node
+ln -sfv /usr/bin/nodejs /usr/bin/node
 
 # Install project npms
 pushd .
@@ -97,8 +97,8 @@ cp -fv ./haproxy/haproxy.cfg /etc/haproxy
 cp -fv ./nginx/nginx-* /etc/nginx/sites-available
 cp -fv ./nginx/nginx.conf /etc/nginx
 rm -Rfv /etc/nginx/sites-enabled/*
-ln -s /etc/nginx/sites-available/nginx-node1 /etc/nginx/sites-enabled/nginx-node1
-ln -s /etc/nginx/sites-available/nginx-node2 /etc/nginx/sites-enabled/nginx-node2
+ln -sfv /etc/nginx/sites-available/nginx-node1 /etc/nginx/sites-enabled/nginx-node1
+ln -sfv /etc/nginx/sites-available/nginx-node2 /etc/nginx/sites-enabled/nginx-node2
 python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node1 \
                                   --search="#AUTO_REPLACE_PR_PATH" \
                                   --replace=$PROJECT_PATH

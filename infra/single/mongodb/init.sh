@@ -25,8 +25,8 @@ mkdir -p /data-mongodb/rs0-2
 mkdir -p /data-mongodb/rs0-3
 mkdir -p /var/log/mongodb
 
-ln -s /data-mongodb/start.sh /usr/local/bin/mongodb-start.sh
-ln -s /data-mongodb/stop.sh /usr/local/bin/mongodb-stop.sh
+ln -svf /data-mongodb/start.sh /usr/local/bin/mongodb-start.sh
+ln -svf /data-mongodb/stop.sh /usr/local/bin/mongodb-stop.sh
 
 mongodb-start.sh
 mongodb-stop.sh
