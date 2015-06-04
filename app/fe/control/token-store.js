@@ -12,12 +12,12 @@ module.exports.removeToken = function() {
     store.remove('token-token');
 };
 
-module.exports.setUser = function(token) {
-    store.set('token-user', token);
+module.exports.setUser = function(user) {
+    store.set('token-user', user);
 };
 
 module.exports.getUser = function() {
-    store.get('token-user');
+    return store.get('token-user');
 };
 
 module.exports.removeUser = function() {

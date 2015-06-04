@@ -3,26 +3,43 @@ var Token       = require('../models/tokenModel');
 module.exports = function(app, passport) {
 
 // Normal routes ===============================================================
-
 	// Show the home page (will also have our login links)
 	app.get('/', function(req, res) {
         if (req.isAuthenticated())
             res.redirect('/profile');
 
+        res.header('status', 'logout');
 		res.render('login.html');
 	});
 
 	// PROFILE SECTION =========================
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.html', {
-			user : req.user
-		});
+        Token.createToken(req.user.local.email, function(err, token){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Set token to : ", token.token);
+                res.header('token', token.token);
+                res.header('user', token.email);
+                res.header('status', 'login');
+                res.render('profile.html', {
+                    user : req.user
+                });
+            }
+        });
 	});
 
 	// LOGOUT ==============================
 	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect('/');
+        Token.invalidateToken(req.user.local.email, function(err, token){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Token removed!")
+                req.logout();
+                res.redirect('/');
+            }
+        });
 	});
 
     // Token test page=======================
@@ -230,7 +247,6 @@ module.exports = function(app, passport) {
 
 
     app.get('/api/test', function(req, res) {
-        console.log(req);
         var incomingToken = req.headers.token;
         console.log('incomingToken: ' + incomingToken);
         Token.findUserByToken(incomingToken, function(err, user) {

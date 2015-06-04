@@ -30,6 +30,18 @@ TokenModel.findUserByToken = function(token, done) {
     }
 };
 
+TokenModel.findTokenByUser = function(email, done) {
+    this.findOne({'email': email}, function (err, usr) {
+        if (err || !usr) {
+            done(err, null);
+        } else if (usr.email === email) {
+            done(false, {email: usr.email});
+        } else {
+            done(new Error('Token for this user does not exist.'), null);
+        }
+    });
+};
+
 TokenModel.createToken = function(email, done) {
     self = this;
     this.findOne({'email': email}, function(err, user) {
