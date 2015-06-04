@@ -2,7 +2,7 @@ tokenStore = require("./token-store.js");
 
 $('document').ready(function() {
 
-    // When page loads check for token and update it the storage
+    // When page loads check for the token and update it at the web store
     var req = new XMLHttpRequest();
     req.open('GET', document.location, false);
     req.send(null);

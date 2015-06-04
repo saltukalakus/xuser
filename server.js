@@ -53,7 +53,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,POST');
-    res.header('Access-Control-Expose-Headers', 'token')
+    res.header('Access-Control-Expose-Headers', 'token, status, user');
     next();
 };
 
