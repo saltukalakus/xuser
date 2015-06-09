@@ -19,7 +19,7 @@ $('document').ready(function() {
         tokenStore.setUser(user);
     }
 
-    var status = req.getResponseHeader('status')
+    var status = req.getResponseHeader('status');
     if  (status == 'logout') {
         console.log("Removed token and user in web store!");
         tokenStore.remove();

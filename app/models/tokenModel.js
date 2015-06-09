@@ -20,7 +20,7 @@ TokenModel.findUserByToken = function(token, done) {
             if (err || !usr) {
                 done(err, null);
             } else if (usr.email === decoded.email) {
-                done(false, {email: usr.email});
+                done(false, usr);
             } else {
                 done(new Error('Token does not exist or does not match.'), null);
             }
@@ -35,7 +35,7 @@ TokenModel.findTokenByUser = function(email, done) {
         if (err || !usr) {
             done(err, null);
         } else if (usr.email === email) {
-            done(false, {email: usr.email});
+            done(false, usr);
         } else {
             done(new Error('Token for this user does not exist.'), null);
         }
@@ -49,39 +49,37 @@ TokenModel.createToken = function(email, done) {
             console.log('err');
             done(true, null);
         }
-        if (user && user.token !==null){
-            console.log("token found!");
-            done(false, user);//token object, in turn
-        } else {
+        if (!user) {
             user = new TokenModel();
             user.email = email;
-            user.date_created = Date.now();
-            user.token =  self.encode({'email': user.email, 'date_created': user.date_created });
-
-            user.save(function(err) {
-                if (err) {
-                    done(err, null);
-                } else {
-                    done(false, user);//token object, in turn
-                }
-            });
         }
+        user.date_created = Date.now();
+        user.token =  self.encode({'email': user.email, 'date_created': user.date_created });
+
+        user.save(function(err) {
+            if (err) {
+                done(err, null);
+            } else {
+                done(false, user);//token object, in turn
+            }
+        });
     });
 };
 
 TokenModel.invalidateToken = function(email, done) {
     this.findOne({'email': email}, function(err, usr) {
-        if(err || !usr) {
-            console.log('err');
+        if (err || !usr) {
+            console.log(err);
+        } else {
+            usr.token = null;
+            usr.save(function (err, usr) {
+                if (err) {
+                    done(err, null);
+                } else {
+                    done(false, 'removed');
+                }
+            });
         }
-        usr.token = null;
-        usr.save(function(err, usr) {
-            if (err) {
-                done(err, null);
-            } else {
-                done(false, 'removed');
-            }
-        });
     });
 };
 

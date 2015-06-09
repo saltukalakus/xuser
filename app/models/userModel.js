@@ -26,6 +26,7 @@ User.signUp = function(req, email, password, done) {
 
                 newUser.local.email = email;
                 newUser.local.password = newUser.generateHash(password);
+                newUser.local.role = 'admin';
 
                 newUser.save(function (err) {
                     if (err)

@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
             if (err) {
                 console.log(err);
             } else {
-                console.log("Token removed!")
+                console.log("Token removed!");
                 req.logout();
                 res.redirect('/');
             }
