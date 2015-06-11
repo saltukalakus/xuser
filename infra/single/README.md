@@ -14,4 +14,4 @@ Infrastructure for single VM installation
 Architecture
 ===================
 
-![ScreenShot](https://github.com/BATYD-Turksat/xuser/blob/master/infra/single/doc/SingleServerHA.jpeg)
+![ScreenShot](https://github.com/saltukalakus/xuser/blob/master/infra/single/doc/SingleServerHA.jpeg)
