@@ -1,4 +1,13 @@
-Infrastructure for single VM installation
+Installation
+==============
+    git clone https://github.com/saltukalakus/xuser
+    cd .xuser/infra/single
+    sudo ./install.sh
+    cd ../ssl
+    sudo ./ssl-key-gen.sh  # For https keys. May not be required if you already have keys.
+    reboot
+
+Single VM Infra (tested with Ubuntu 14.x)
 ==============
 
 * Haproxy is configured as proxy and load balancer in front of Node and Nginx servers. Running on port 80 and 443
