@@ -6,6 +6,12 @@ Infrastructure for single VM installation
 * All http is redirected to https by Haproxy.
 * Nginx is used as static file server. Nginx sample conf file is nginx-conf. Nginx runs on localhost:809x
 * Node app runs on localhost:808x 
-* Upstart and Monit controls the whole stack
 * Redis is configured for session management for Node instances.
-* ...
+* Sentinel is used for Redis HA.
+* MongoDB with replica set is used for application database.
+* Upstart starts the whole stack
+
+Architecture
+===================
+
+![ScreenShot](https://github.com/BATYD-Turksat/xuser/blob/master/infra/single/doc/architecture.jpeg)
