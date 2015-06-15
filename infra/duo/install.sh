@@ -10,12 +10,23 @@ fi
 # Installations
 # ===============
 
+# Check slave server SSH key available
+
+
+
+# Introduce new repositories
+apt-add-repository -y ppa:vbernat/haproxy-1.5
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+add-apt-repository -y ppa:rwky/redis
+apt-get -y update
+
+
 # Helpers
 apt-get -y install python-pip
 pip install docopt
 
 # NodeJs
-apt-get -y update
 apt-get -y install nodejs
 apt-get -y install npm
 npm install gulp -g
@@ -36,8 +47,6 @@ echo $PROJECT_PATH
 # Nginx
 apt-get -y install nginx
 # Haproxy
-apt-add-repository -y ppa:vbernat/haproxy-1.5
-apt-get -y update
 apt-get -y --force-yes install haproxy
 # MongoDB
 # Fix Failed global initialization: BadValue Invalid or no user locale set.
@@ -52,9 +61,6 @@ dpkg-reconfigure locales
 apt-get -y remove mongodb* --purge
 apt-get -y autoremove
 # Install mongo
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-apt-get -y update
 apt-get -y install mongodb-org
 # Fix mongo version
 echo "mongodb-org hold" | sudo dpkg --set-selections
@@ -83,8 +89,6 @@ cd ./mongodb
 . init.sh
 popd
 # Redis
-add-apt-repository -y ppa:rwky/redis
-apt-get -y update
 apt-get -y install redis-server
 
 # Haproxy conf setup

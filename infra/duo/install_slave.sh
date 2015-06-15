@@ -80,12 +80,10 @@ mongodb hard nproc  64000 \n"
 
 # Generate the initial mongo data set
 pushd .
-cd ./mongodb
+cd ./mongodb_slave/
 . init.sh
 popd
 # Redis
-add-apt-repository -y ppa:rwky/redis
-apt-get -y update
 apt-get -y install redis-server
 
 # Haproxy conf setup
@@ -98,11 +96,7 @@ cp -fv ./haproxy/haproxy.cfg /etc/haproxy
 cp -fv ./nginx/nginx-* /etc/nginx/sites-available
 cp -fv ./nginx/nginx.conf /etc/nginx
 rm -Rfv /etc/nginx/sites-enabled/*
-ln -sfv /etc/nginx/sites-available/nginx-node1 /etc/nginx/sites-enabled/nginx-node1
 ln -sfv /etc/nginx/sites-available/nginx-node2 /etc/nginx/sites-enabled/nginx-node2
-python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node1 \
-                                  --search="#AUTO_REPLACE_PR_PATH" \
-                                  --replace=$PROJECT_PATH
 python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node2 \
                                   --search="#AUTO_REPLACE_PR_PATH" \
                                   --replace=$PROJECT_PATH
@@ -124,26 +118,3 @@ python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
                                   --replace=$PROJECT_PATH
 
 initctl reload-configuration
-
-# Stop all if already working
-stop nodejs
-stop mongod
-stop sentinel
-stop redis
-stop nginx
-stop haproxy
-
-start haproxy
-start nginx
-start redis
-start sentinel
-start mongod
-start nodejs
-
-echo "Hey! Don't forget to install SSL keys!"
-read -p "Now I need to reboot. Ok for you? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    reboot -h now
-fi

@@ -1,8 +1,8 @@
 var cfg = { _id: 'rs0',
     members: [
-        { _id: 0, host: '127.0.0.1:27001', "priority": 5},
-        { _id: 1, host: '127.0.0.1:27002', "priority": 2},
-        { _id: 2, host: '127.0.0.1:27003', "priority" : 0, "arbiterOnly" : true}
+        { _id: 0, host: '#AUTO_REPLACE_SERVER_1:27001', "priority": 5},
+        { _id: 1, host: '#AUTO_REPLACE_SERVER_2', "priority": 2},
+        { _id: 2, host: '#AUTO_REPLACE_SERVER_1:27002', "priority" : 0, "arbiterOnly" : true}
     ]
 };
 
