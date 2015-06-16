@@ -10,9 +10,32 @@ fi
 # Installations
 # ===============
 
+if [ $# != 2 ]
+    then
+        echo "Script should take IP address of master and slave servers"
+        echo "Example: sudo ./install.sh MASTER_SERVER_IP SLAVE_SERVER_IP"
+        exit $?
+fi
+
+MASTER_IP=$1
+SLAVE_IP=$2
+SLAVE_USER="root"
+PATH=$(pwd)
+
 # Check slave server SSH key available
+SSH_KEY="/home/keys/key.pem"
+if [ -f "$SSH_KEY" ]
+then
+	echo "SSH Key for slave server found."
+else
+	echo "$SSH_KEY not found. Copy the key and re-try"
+	exit 1
+fi
 
+# Execute slave server install script. Assuming project is copied in the same folder on both servers
+ssh -o StrictHostKeyChecking=no $SLAVE_USER@$SLAVE_IP -i $SSH_KEY "cd $PATH; ./install_slave.sh"
 
+exit 1
 
 # Introduce new repositories
 apt-add-repository -y ppa:vbernat/haproxy-1.5

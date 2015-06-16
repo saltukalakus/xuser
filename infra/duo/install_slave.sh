@@ -21,6 +21,8 @@ apt-get -y update
 apt-get -y install python-pip
 pip install docopt
 
+exit 1 # TODO: For test purpose. Remove it later.
+
 # NodeJs
 apt-get -y install nodejs
 apt-get -y install npm
