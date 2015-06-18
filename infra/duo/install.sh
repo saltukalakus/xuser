@@ -9,110 +9,27 @@ fi
 
 # Installations
 # ===============
-
-if [ $# != 2 ]
-    then
-        echo "Script should take IP address of master and slave servers"
-        echo "Example: sudo ./install.sh MASTER_SERVER_IP SLAVE_SERVER_IP"
-        exit $?
-fi
-
 MASTER_IP=$1
 SLAVE_IP=$2
-SLAVE_USER="root"
-PATH=$(pwd)
 
-# Check slave server SSH key available
-SSH_KEY="/home/keys/key.pem"
-if [ -f "$SSH_KEY" ]
-then
-	echo "SSH Key for slave server found."
-else
-	echo "$SSH_KEY not found. Copy the key and re-try"
-	exit 1
-fi
-
-# Execute slave server install script. Assuming project is copied in the same folder on both servers
-ssh -o StrictHostKeyChecking=no $SLAVE_USER@$SLAVE_IP -i $SSH_KEY "cd $PATH; ./install_slave.sh"
-
-exit 1
-
-# Introduce new repositories
-apt-add-repository -y ppa:vbernat/haproxy-1.5
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-add-apt-repository -y ppa:rwky/redis
-apt-get -y update
-
-
-# Helpers
-apt-get -y install python-pip
-pip install docopt
-
-# NodeJs
-apt-get -y install nodejs
-apt-get -y install npm
-npm install gulp -g
-mkdir -p /var/log/nodejs
-ln -sfv /usr/bin/nodejs /usr/bin/node
-
-# Install project npms
 pushd .
 cd ../..
 PROJECT_PATH=$(pwd)
-npm install
-gulp build
-gulp product
 popd
 echo "Project path:"
 echo $PROJECT_PATH
 
-# Nginx
-apt-get -y install nginx
-# Haproxy
-apt-get -y --force-yes install haproxy
-# MongoDB
-# Fix Failed global initialization: BadValue Invalid or no user locale set.
-# Please ensure LANG and/or LC_* environment variables are set correctly.
-apt-get -y install language-pack-en
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-locale-gen en_US.UTF-8
-dpkg-reconfigure locales
-# Remove the old mongo
-apt-get -y remove mongodb* --purge
-apt-get -y autoremove
-# Install mongo
-apt-get -y install mongodb-org
-# Fix mongo version
-echo "mongodb-org hold" | sudo dpkg --set-selections
-echo "mongodb-org-server hold" | sudo dpkg --set-selections
-echo "mongodb-org-shell hold" | sudo dpkg --set-selections
-echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
-echo "mongodb-org-tools hold" | sudo dpkg --set-selections
+# Install common files.
+. install_common.sh
 
-# For mongodb user increase various limits
-python ../helpers/conf_append.py --file=/etc/security/limits.conf --key="#Mongodb User Limits" \
---append=" \
-mongodb soft fsize -1 \n \
-mongodb hard fsize -1 \n \
-mongodb soft cpu   -1 \n \
-mongodb hard cpu   -1 \n \
-mongodb soft as    -1 \n \
-mongodb hard as    -1 \n \
-mongodb soft nofile 64000 \n \
-mongodb hard nofile 64000 \n \
-mongodb soft nproc  64000 \n \
-mongodb hard nproc  64000 \n"
+exit 1
 
 # Generate the initial mongo data set
 pushd .
 cd ./mongodb
 . init.sh
 popd
-# Redis
-apt-get -y install redis-server
+
 
 # Haproxy conf setup
 /etc/init.d/haproxy stop

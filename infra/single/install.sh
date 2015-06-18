@@ -84,8 +84,6 @@ cd ./mongodb
 . init.sh
 popd
 # Redis
-add-apt-repository -y ppa:rwky/redis
-apt-get -y update
 apt-get -y install redis-server
 
 # Haproxy conf setup
