@@ -8,7 +8,7 @@ if [ $(id -u) != "0" ]
 fi
 
 if [ "$#" -ne 3 ]; then
-    echo "USAGE: ./install_master.sh MASTER_IP SLAVE_IP"
+    echo "USAGE: ./install_slave.sh MASTER_IP SLAVE_IP"
     exit 1
 fi
 
@@ -16,7 +16,7 @@ fi
 # ===============
 MASTER_IP=$1
 SLAVE_IP=$2
-
+if [ $(MASTER_IP) == ""
 pushd .
 cd ../..
 PROJECT_PATH=$(pwd)
@@ -29,7 +29,7 @@ echo $PROJECT_PATH
 
 # Generate the initial mongo data set
 pushd .
-cd ./mongodb_master
+cd ./mongodb_slave
 . init.sh
 popd
 
