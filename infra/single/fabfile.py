@@ -17,7 +17,7 @@ def git_pull():
     run('pwd')
 
 @with_settings(warn_only=True)
-def install_master():
+def install():
     with settings(sudo_user='root'):
-        with cd('/home/ubuntu/xuser/infra/duo'):
-            sudo('./install_master.sh', user="root")
+        with cd('/home/ubuntu/xuser/infra/single'):
+            sudo('./install.sh', user="root")
