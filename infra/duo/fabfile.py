@@ -1,7 +1,9 @@
 from fabric.api import *
 
+master_ip = '52.28.150.155'
+slave_ip = '52.28.154.136'
 local_ip_list =[]
-env.hosts = ['52.28.150.155', '52.28.154.136']
+env.hosts = [master_ip, slave_ip]
 env.user = 'ubuntu'
 env.key_filename = '/home/keys/key.pem'
 
@@ -14,23 +16,23 @@ def git_pull():
     with cd('/home/ubuntu/xuser'):
         run('git pull')
 
-@hosts('ubuntu@52.28.150.155')
+@hosts(master_ip)
 @with_settings(warn_only=True)
-def install_master(ip_list):
+def install_master(lmaster_ip, lslave_ip):
     with settings(sudo_user='root'):
         with cd('/home/ubuntu/xuser/infra/duo'):
-            execute = './install_master.sh' + ' ' + ip_list[0] + ' ' + ip_list[1]
+            execute = './install_master.sh' + ' ' + lmaster_ip + ' ' + lslave_ip
             sudo(execute, user="root")
 
-@hosts('ubuntu@52.28.154.136')
+@hosts(slave_ip)
 @with_settings(warn_only=True)
-def install_slave(ip_list):
+def install_slave(lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
-        execute = './install_slave.sh' + ' ' + ip_list[0] + ' ' + ip_list[1]
+        execute = './install_slave.sh' + ' ' + lmaster_ip + ' ' + lslave_ip
         sudo(execute, user="root")
 
 @with_settings(warn_only=True)
-def install():
+def get_local_ip():
     global local_ip_list
     if len(local_ip_list) == len(env.hosts):
         local_ip_list = []
@@ -42,5 +44,3 @@ def install():
     if len(local_ip_list) == len(env.hosts):
         for i in local_ip_list:
             print ("%s" % i)
-        install_slave(local_ip_list)
-        install_master(local_ip_list)
