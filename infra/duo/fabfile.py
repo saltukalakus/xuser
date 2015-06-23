@@ -9,6 +9,7 @@ env.key_filename = '/home/keys/key.pem'
 
 @with_settings(warn_only=True)
 def git_checkout():
+    sudo('rm -Rf xuser')
     run('git clone https://github.com/saltukalakus/xuser')
 
 @with_settings(warn_only=True)
