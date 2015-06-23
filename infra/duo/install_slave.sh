@@ -7,7 +7,7 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 2 ]; then
     echo "USAGE: ./install_slave.sh MASTER_IP SLAVE_IP"
     exit 1
 fi
@@ -16,7 +16,7 @@ fi
 # ===============
 MASTER_IP=$1
 SLAVE_IP=$2
-if [ $(MASTER_IP) == ""
+
 pushd .
 cd ../..
 PROJECT_PATH=$(pwd)
