@@ -25,3 +25,8 @@ mkdir -p /var/log/mongodb
 
 ln -svf /data-mongodb/start.sh /usr/local/bin/mongodb-start.sh
 ln -svf /data-mongodb/stop.sh /usr/local/bin/mongodb-stop.sh
+
+chown mongodb:mongodb -Rf /data-mongodb
+
+# Remove the socket temporary files
+rm -Rf /tmp/mongodb*
