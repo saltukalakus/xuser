@@ -1,11 +1,16 @@
 from fabric.api import *
 
+#
+# Configurations
+#
 master_ip = '52.28.150.155'
 slave_ip = '52.28.154.136'
-local_ip_list =[]
-env.hosts = [master_ip, slave_ip]
 env.user = 'ubuntu'
 env.key_filename = '/home/keys/key.pem'
+
+
+local_ip_list =[]
+env.hosts = [master_ip, slave_ip]
 
 @with_settings(warn_only=True)
 def git_checkout():

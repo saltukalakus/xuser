@@ -20,7 +20,7 @@ def replace( file, search, replace):
     data = f.read()
     f.close()
 
-    data_replaced = data.replace(search, replace, 1);
+    data_replaced = data.replace(search, replace);
 
     # save result
     f = open(file, 'w')

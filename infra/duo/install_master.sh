@@ -27,10 +27,21 @@ echo $PROJECT_PATH
 # Install common files.
 . install_common.sh
 
+# Copy upstart files
+cp -fv ./upstart/* /etc/init
+python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
+                                  --search="#AUTO_REPLACE_COOKIE_SECRET" \
+                                  --replace="42rerwejfkj9434cds5ewejd"
+python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
+                                  --search="#AUTO_REPLACE_PR_PATH" \
+                                  --replace=$PROJECT_PATH
+
+initctl reload-configuration
+
 # Generate the initial mongo data set
 pushd .
 cd ./mongodb_master
-. init.sh
+. init.sh $MASTER_IP $SLAVE_IP
 popd
 
 exit 1
@@ -61,16 +72,6 @@ mkdir -p /var/log/redis
 cp -fv ./redis/*.conf /etc/redis
 chown redis:redis /etc/redis/*.conf
 
-# Copy upstart files
-cp -fv ./upstart/* /etc/init
-python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
-                                  --search="#AUTO_REPLACE_COOKIE_SECRET" \
-                                  --replace="42rerwejfkj9434cds5ewejd"
-python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
-                                  --search="#AUTO_REPLACE_PR_PATH" \
-                                  --replace=$PROJECT_PATH
-
-initctl reload-configuration
 
 # Stop all if already working
 stop nodejs
