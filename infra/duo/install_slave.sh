@@ -43,12 +43,16 @@ cd ./mongodb_slave
 . init.sh
 popd
 
-exit 1
-
 # Haproxy conf setup
 /etc/init.d/haproxy stop
 mv -fv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
 cp -fv ./haproxy/haproxy.cfg /etc/haproxy
+python ../helpers/auto_replace.py --file=/etc/haproxy \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=/etc/haproxy \
+                                  --search="#AUTO_REPLACE_SERVER_2" \
+                                  --replace=$SLAVE_IP
 
 # Nginx conf setup
 /etc/init.d/nginx stop
@@ -56,11 +60,7 @@ cp -fv ./nginx/nginx-* /etc/nginx/sites-available
 cp -fv ./nginx/nginx.conf /etc/nginx
 rm -Rfv /etc/nginx/sites-enabled/*
 ln -sfv /etc/nginx/sites-available/nginx-node1 /etc/nginx/sites-enabled/nginx-node1
-ln -sfv /etc/nginx/sites-available/nginx-node2 /etc/nginx/sites-enabled/nginx-node2
 python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node1 \
-                                  --search="#AUTO_REPLACE_PR_PATH" \
-                                  --replace=$PROJECT_PATH
-python ../helpers/auto_replace.py --file=/etc/nginx/sites-available/nginx-node2 \
                                   --search="#AUTO_REPLACE_PR_PATH" \
                                   --replace=$PROJECT_PATH
 
@@ -68,7 +68,13 @@ mv -fv /etc/init.d/nginx ~ #  Nginx is controlled by upstart
 
 # Redis conf setup
 mkdir -p /var/log/redis
-cp -fv ./redis/*.conf /etc/redis
+cp -fv ./redis_slave/*.conf /etc/redis
+python ../helpers/auto_replace.py --file=/etc/redis/redis-6379.conf \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=/etc/redis/sentinel-26379.conf \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
 chown redis:redis /etc/redis/*.conf
 
 # Stop all if already working
