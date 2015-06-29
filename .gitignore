@@ -1,5 +1,6 @@
 /log/*.log
 /tmp
+/config
 .DS_Store
 .idea/
 .sass-cache

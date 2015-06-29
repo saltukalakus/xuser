@@ -16,8 +16,8 @@ var session      = require('express-session');
 var RedisStore   = require('connect-redis')(session);
 var Redis        = require('ioredis');
 
-var dbConf       = require('./config/database.js');
-var sessionConf  = require('./config/session.js');
+var dbConf       = require('./infra/config/database.js');
+var sessionConf  = require('./infra/config/session.js');
 
 // configuration ===============================================================
 mongoose.connect(dbConf.url); // connect to our database
