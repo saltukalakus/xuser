@@ -49,3 +49,8 @@ def get_local_ip():
     if len(local_ip_list) == len(env.hosts):
         for i in local_ip_list:
             print ("%s" % i)
+
+@with_settings(warn_only=True)
+def generate_ssl_key():
+    with cd('/home/ubuntu/xuser/infra/ssl'):
+        sudo('. ssl-key-gen.sh', user="root")
