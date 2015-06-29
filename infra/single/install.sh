@@ -78,11 +78,29 @@ mongodb hard nofile 64000 \n \
 mongodb soft nproc  64000 \n \
 mongodb hard nproc  64000 \n"
 
+# Copy config template to project root
+cp -a ../config ../..
+
 # Generate the initial mongo data set
 pushd .
 cd ./mongodb
 . init.sh
 popd
+
+# Update the application mongodb paths
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace="127.0.0.1"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_SERVER_2" \
+                                  --replace="127.0.0.1"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_PORT_1" \
+                                  --replace="27001"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_PORT_2" \
+                                  --replace="27002"
+
 # Redis
 apt-get -y install redis-server
 

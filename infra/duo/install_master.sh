@@ -38,11 +38,25 @@ python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
 
 initctl reload-configuration
 
-# Generate the initial mongo data set
+# Generate the initial mongodb data set
 pushd .
 cd ./mongodb_master
 . init.sh $MASTER_IP $SLAVE_IP
 popd
+
+# Update the application mongodb paths
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_SERVER_2" \
+                                  --replace=$SLAVE_IP
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_PORT_1" \
+                                  --replace="27001"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_PORT_2" \
+                                  --replace="27001"
 
 # Haproxy conf setup
 /etc/init.d/haproxy stop

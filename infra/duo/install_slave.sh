@@ -43,6 +43,20 @@ cd ./mongodb_slave
 . init.sh
 popd
 
+# Update the application mongodb paths
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_SERVER_2" \
+                                  --replace=$SLAVE_IP
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_PORT_1" \
+                                  --replace="27001"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
+                                  --search="#AUTO_REPLACE_PORT_2" \
+                                  --replace="27001"
+
 # Haproxy conf setup
 /etc/init.d/haproxy stop
 mv -fv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
