@@ -47,10 +47,10 @@ popd
 /etc/init.d/haproxy stop
 mv -fv /etc/init.d/haproxy ~ #  Haproxy is controlled by upstart
 cp -fv ./haproxy/haproxy.cfg /etc/haproxy
-python ../helpers/auto_replace.py --file=/etc/haproxy \
+python ../helpers/auto_replace.py --file=/etc/haproxy/haproxy.cfg \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace=$MASTER_IP
-python ../helpers/auto_replace.py --file=/etc/haproxy \
+python ../helpers/auto_replace.py --file=/etc/haproxy/haproxy.cfg \
                                   --search="#AUTO_REPLACE_SERVER_2" \
                                   --replace=$SLAVE_IP
 
@@ -84,13 +84,6 @@ stop sentinel
 stop redis
 stop nginx
 stop haproxy
-
-start haproxy
-start nginx
-start redis
-start sentinel
-start mongod
-start nodejs
 
 echo "Hey! Don't forget to install SSL keys!"
 read -p "Now I need to reboot. Ok for you? " -n 1 -r
