@@ -12,11 +12,13 @@ env.key_filename = '/home/keys/key.pem'
 local_ip_list =[]
 env.hosts = [master_ip, slave_ip]
 
+@parallel
 @with_settings(warn_only=True)
 def git_checkout():
     sudo('rm -Rf xuser')
     run('git clone https://github.com/saltukalakus/xuser')
 
+@parallel
 @with_settings(warn_only=True)
 def git_pull():
     with cd('/home/ubuntu/xuser'):
@@ -56,6 +58,7 @@ def generate_ssl_key():
     with lcd('../ssl'):
         local('./ssl-key-gen.sh')
 
+@parallel
 @with_settings(warn_only=True)
 def copy_ssl_key():
     put('../ssl/site.pem', '/etc/ssl/private/site.pem', use_sudo=True)
