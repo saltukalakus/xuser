@@ -51,6 +51,16 @@ def get_local_ip():
             print ("%s" % i)
 
 @with_settings(warn_only=True)
+@runs_once
 def generate_ssl_key():
-    with cd('/home/ubuntu/xuser/infra/ssl'):
-        sudo('. ssl-key-gen.sh', user="root")
+    with lcd('../ssl'):
+        local('./ssl-key-gen.sh')
+
+@with_settings(warn_only=True)
+def copy_ssl_key():
+    put('../ssl/site.pem', '/etc/ssl/private/site.pem', use_sudo=True)
+
+@parallel
+@with_settings(warn_only=True)
+def reboot_all():
+    reboot(wait=0)
