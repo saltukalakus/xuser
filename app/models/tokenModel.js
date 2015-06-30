@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
-var tokenConfig = require('../../infra/config/token');
+var tokenConfig = require('../../config/token');
 var tokenSchema = require('./tokenSchema');
 
 var TokenModel = mongoose.model('Token', tokenSchema);

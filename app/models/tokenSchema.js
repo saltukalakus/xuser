@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var tokenConfig = require('../../infra/config/token');
+var tokenConfig = require('../../config/token');
 
 // define database schema for tokens
 var tokenSchema = mongoose.Schema({
