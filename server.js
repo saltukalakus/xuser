@@ -18,6 +18,7 @@ var Redis        = require('ioredis');
 
 var dbConf       = require('./config/database.js');
 var sessionConf  = require('./config/session.js');
+var inetConf     = require('./config/inet.js')
 
 // configuration ===============================================================
 mongoose.connect(dbConf.url); // connect to our database
@@ -63,5 +64,5 @@ app.use(allowCrossDomain);
 require('./app/routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
-app.listen(port, '127.0.0.1');
-console.log('The magic happens on port ' + port);
+app.listen(port, inetConf.addr);
+console.log('The magic happens on port ' + port + ' at' + inetConf.addr);

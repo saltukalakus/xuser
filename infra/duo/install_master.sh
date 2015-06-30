@@ -44,7 +44,7 @@ cd ./mongodb_master
 . init.sh $MASTER_IP $SLAVE_IP
 popd
 
-# Update the application mongodb paths
+# Update the application config settings
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace=$MASTER_IP
@@ -57,6 +57,9 @@ python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_PORT_2" \
                                   --replace="27001"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/inet.js \
+                                  --search="#AUTO_REPLACE_SERVER_IP" \
+                                  --replace=$MASTER_IP
 
 # Haproxy conf setup
 /etc/init.d/haproxy stop

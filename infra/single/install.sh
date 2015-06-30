@@ -87,7 +87,7 @@ cd ./mongodb
 . init.sh
 popd
 
-# Update the application mongodb paths
+# Update the application config settings
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace="127.0.0.1"
@@ -100,6 +100,9 @@ python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_PORT_2" \
                                   --replace="27002"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/inet.js \
+                                  --search="#AUTO_REPLACE_SERVER_IP" \
+                                  --replace="127.0.0.1"
 
 # Redis
 apt-get -y install redis-server
