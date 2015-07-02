@@ -7,7 +7,7 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
     echo "USAGE: ./install_master.sh SECRET MASTER_IP SLAVE_IP"
     exit 1
 fi
