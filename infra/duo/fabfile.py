@@ -26,16 +26,16 @@ def git_pull():
 
 @hosts(master_ip)
 @with_settings(warn_only=True)
-def install_master(lmaster_ip, lslave_ip):
+def install_master(secret, lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
-        execute = './install_master.sh' + ' ' + lmaster_ip + ' ' + lslave_ip
+        execute = './install_master.sh' + ' ' + secret + ' ' + lmaster_ip + ' ' + lslave_ip
         sudo(execute, user="root")
 
 @hosts(slave_ip)
 @with_settings(warn_only=True)
-def install_slave(lmaster_ip, lslave_ip):
+def install_slave(secret, lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
-        execute = './install_slave.sh' + ' ' + lmaster_ip + ' ' + lslave_ip
+        execute = './install_slave.sh' + ' ' + secret + ' ' + lmaster_ip + ' ' + lslave_ip
         sudo(execute, user="root")
 
 @with_settings(warn_only=True)

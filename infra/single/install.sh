@@ -7,8 +7,14 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
+if [ "$#" -ne 1 ]; then
+    echo "USAGE: ./install.sh SECRET"
+    exit 1
+fi
+
 # Installations
 # ===============
+SECRET=$1
 
 # Introduce new repositories
 apt-add-repository -y ppa:vbernat/haproxy-1.5
@@ -103,6 +109,33 @@ python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/inet.js \
                                   --search="#AUTO_REPLACE_SERVER_IP" \
                                   --replace="127.0.0.1"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_HOST1" \
+                                  --replace="localhost"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_HOST2" \
+                                  --replace="localhost"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_HOST3" \
+                                  --replace="localhost"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_PORT1" \
+                                  --replace="26379"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_PORT2" \
+                                  --replace="26380"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_PORT3" \
+                                  --replace="26381"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_CLUSTER_NAME" \
+                                  --replace="mymaster"
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
+                                  --search="#AUTO_REPLACE_SESSION_SECRET" \
+                                  --replace=$SECRET
+python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/token.js \
+                                  --search="#AUTO_REPLACE_TOKEN_SECRET" \
+                                  --replace=$SECRET
 
 # Redis
 apt-get -y install redis-server
@@ -135,9 +168,6 @@ chown redis:redis /etc/redis/*.conf
 
 # Copy upstart files
 cp -fv ./upstart/* /etc/init
-python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
-                                  --search="#AUTO_REPLACE_COOKIE_SECRET" \
-                                  --replace="42rerwejfkj9434cds5ewejd"
 python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
                                   --search="#AUTO_REPLACE_PR_PATH" \
                                   --replace=$PROJECT_PATH

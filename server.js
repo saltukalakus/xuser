@@ -37,8 +37,13 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/app/fe/views');
 
 // redis options
-var options = {sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 },  { host: 'localhost', port: 26381 }],
-    name: 'mymaster'};
+var options = {sentinels: [{ host: sessionConf.sentinel.host1,
+                             port: sessionConf.sentinel.port1 },
+                           { host: sessionConf.sentinel.host2,
+                             port: sessionConf.sentinel.port2 },
+                           { host: sessionConf.sentinel.host3,
+                             port: sessionConf.sentinel.port3 }],
+    name: sessionConf.cluster.name};
 
 // required for passport sessions
 app.use(session({

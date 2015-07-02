@@ -14,7 +14,8 @@ def git_pull():
         run('git pull')
 
 @with_settings(warn_only=True)
-def install():
+def install(secret):
     with settings(sudo_user='root'):
         with cd('/home/ubuntu/xuser/infra/single'):
-            sudo('./install.sh', user="root")
+            execute = './install_slave.sh' + ' ' + secret
+            sudo(execute, user="root")

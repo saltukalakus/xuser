@@ -12,5 +12,5 @@ module.exports = {
      */
     'ttl': 3600000, //1 hour
     'resetTokenExpiresMinutes': 20, //20 minutes later,
-    'tokenSecret': "thisistokensecret"
+    'tokenSecret': "#AUTO_REPLACE_TOKEN_SECRET"
 };
