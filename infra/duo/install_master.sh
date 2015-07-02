@@ -29,6 +29,12 @@ echo $PROJECT_PATH
 . install_common.sh
 
 # Copy upstart files
+rm -Rf /etc/init/redis* \
+       /etc/init/nodejs* \
+       /etc/init/mongo* \
+       /etc/init/sentinel* \
+       /etc/init/haproxy* \
+       /etc/init/nginx*
 cp -fv ./upstart/* /etc/init
 cp -fv ./upstart/master/* /etc/init
 python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \

@@ -167,6 +167,12 @@ cp -fv ./redis/*.conf /etc/redis
 chown redis:redis /etc/redis/*.conf
 
 # Copy upstart files
+rm -Rf /etc/init/redis* \
+       /etc/init/nodejs* \
+       /etc/init/mongo* \
+       /etc/init/sentinel* \
+       /etc/init/haproxy* \
+       /etc/init/nginx*
 cp -fv ./upstart/* /etc/init
 python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
                                   --search="#AUTO_REPLACE_PR_PATH" \
