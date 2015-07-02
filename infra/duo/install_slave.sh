@@ -30,6 +30,7 @@ echo $PROJECT_PATH
 
 # Copy upstart files
 cp -fv ./upstart/* /etc/init
+cp -fv ./upstart/slave/* /etc/init
 python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
                                   --search="#AUTO_REPLACE_PR_PATH" \
                                   --replace=$PROJECT_PATH
