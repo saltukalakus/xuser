@@ -120,6 +120,9 @@ cp -fv ./redis_slave/*.conf /etc/redis
 python ../helpers/auto_replace.py --file=/etc/redis/redis-6379.conf \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=/etc/redis/redis-6379.conf \
+                                  --search="#AUTO_REPLACE_SERVER_2" \
+                                  --replace=$SLAVE_IP
 python ../helpers/auto_replace.py --file=/etc/redis/sentinel-26379.conf \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace=$MASTER_IP
