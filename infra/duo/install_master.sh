@@ -142,10 +142,5 @@ stop redis
 stop nginx
 stop haproxy
 
-echo "Hey! Don't forget to install SSL keys!"
-read -p "Now I need to reboot. Ok for you? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    reboot -h now
-fi
+echo "Installation completed. Need a reboot for changes to get activated."
+echo "Also don't forget to install SSL keys!"
