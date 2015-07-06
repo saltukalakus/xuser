@@ -3,8 +3,8 @@ from fabric.api import *
 #
 # Configurations
 #
-master_ip = '52.28.150.155'
-slave_ip = '52.28.154.136'
+master_ip = '52.28.178.87'
+slave_ip = '52.28.110.199'
 env.user = 'ubuntu'
 env.key_filename = '/home/keys/key.pem'
 
@@ -67,3 +67,9 @@ def copy_ssl_key():
 @with_settings(warn_only=True)
 def reboot_all():
     reboot(wait=0)
+
+@parallel
+@with_settings(warn_only=True)
+def git_install():
+    sudo('apt-get install -y git', user="root")
+
