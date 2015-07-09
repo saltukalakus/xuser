@@ -45,8 +45,9 @@ initctl reload-configuration
 
 # Keepalived conf scripts
 mkdir -p /etc/keepalived
-cp ./keepalived/keepalived_slave_aws.conf /etc/keepalived/keepalived.conf
-cp ./keepalived/slave_aws.sh /etc/keepalived/slave_aws.sh
+cp -vf ./keepalived/keepalived_slave_aws.conf /etc/keepalived/keepalived.conf
+cp -vf ./keepalived/slave_aws.sh /etc/keepalived
+chmod 755 /etc/keepalived/slave_aws.sh
 
 # Generate the initial mongo data set
 pushd .
