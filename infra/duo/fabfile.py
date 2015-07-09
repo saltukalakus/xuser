@@ -73,3 +73,12 @@ def reboot_all():
 def git_install():
     sudo('apt-get install -y git', user="root")
 
+@hosts(slave_ip)
+@with_settings(warn_only=True)
+def aws_configure_slave():
+    sudo('aws configure', user="root")
+
+@hosts(master_ip)
+@with_settings(warn_only=True)
+def aws_configure_master():
+    sudo('aws configure', user="root")
