@@ -42,6 +42,12 @@ python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
                                   --replace=$PROJECT_PATH
 
 initctl reload-configuration
+
+# Keepalived conf scripts
+mkdir -p /etc/keepalived
+cp ./keepalive/keepalived_slave_aws.conf /etc/keepalived/keepalived.conf
+cp ./keepalive/slave_aws.sh /etc/keepalived/slave_aws.sh
+
 # Generate the initial mongo data set
 pushd .
 cd ./mongodb_slave

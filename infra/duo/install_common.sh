@@ -26,6 +26,12 @@ gulp build
 gulp product
 popd
 
+# Install keepalived
+pushd .
+cd ./keepalive
+. install_aws.sh
+popd
+
 # Nginx
 apt-get -y install nginx
 # Haproxy
