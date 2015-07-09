@@ -23,7 +23,7 @@ rm -Rf keepalived-*
 ln -sf /usr/local/sbin/keepalived /usr/sbin/keepalived
 
 # TODO: Make this an upstart script
-cp -vf init.d.keepalived /etc/init.d
+cp -fv init.d.keepalived /etc/init.d/keepalived
 chmod +x /etc/init.d/keepalived
 update-rc.d keepalived defaults
 
