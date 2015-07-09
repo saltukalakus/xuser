@@ -17,9 +17,10 @@ cd keepalived-*
 ./configure
 make
 make install
+cd ..
 rm -Rf keepalived-*
 
-ln -s /usr/local/sbin/keepalived /usr/sbin/keepalived
+ln -sf /usr/local/sbin/keepalived /usr/sbin/keepalived
 
 # TODO: Make this an upstart script
 cp -vf init.d.keepalived /etc/init.d
