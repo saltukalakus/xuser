@@ -45,8 +45,8 @@ initctl reload-configuration
 
 # Keepalived conf scripts
 mkdir -p /etc/keepalived
-cp ./keepalive/keepalived_master_aws.conf /etc/keepalived/keepalived.conf
-cp ./keepalive/master_aws.sh /etc/keepalived/master_aws.sh
+cp ./keepalived/keepalived_master_aws.conf /etc/keepalived/keepalived.conf
+cp ./keepalived/master_aws.sh /etc/keepalived/master_aws.sh
 
 # Generate the initial mongodb data set
 pushd .

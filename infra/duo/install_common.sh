@@ -28,7 +28,7 @@ popd
 
 # Install keepalived
 pushd .
-cd ./keepalive
+cd ./keepalived
 . install_aws.sh
 popd
 
