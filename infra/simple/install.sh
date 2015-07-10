@@ -17,8 +17,10 @@ fi
 SECRET=$1
 
 # Introduce new repositories
+apt-add-repository -y ppa:vbernat/haproxy-1.5
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+add-apt-repository -y ppa:rwky/redis
 apt-get -y update
 
 # Helpers
@@ -45,7 +47,8 @@ echo $PROJECT_PATH
 
 # Nginx
 apt-get -y install nginx
-
+# Haproxy
+apt-get -y --force-yes install haproxy
 # MongoDB
 # Fix Failed global initialization: BadValue Invalid or no user locale set.
 # Please ensure LANG and/or LC_* environment variables are set correctly.
