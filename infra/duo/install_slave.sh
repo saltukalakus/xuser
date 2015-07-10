@@ -7,16 +7,17 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
-if [ "$#" -ne 3 ]; then
-    echo "USAGE: ./install_slave.sh SECRET MASTER_IP SLAVE_IP"
+if [ "$#" -ne 4 ]; then
+    echo "USAGE: ./install_master.sh SECRET AWS_ID_OF_SLAVE MASTER_IP SLAVE_IP"
     exit 1
 fi
 
 # Installations
 # ===============
 SECRET=$1
-MASTER_IP=$2
-SLAVE_IP=$3
+AWS_ID=$2
+MASTER_IP=$3
+SLAVE_IP=$4
 
 pushd .
 cd ../..
@@ -44,10 +45,23 @@ python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
 initctl reload-configuration
 
 # Keepalived conf scripts
+ELASTIC_IP='52.28.178.87'
 mkdir -p /etc/keepalived
 cp -vf ./keepalived/keepalived_slave_aws.conf /etc/keepalived/keepalived.conf
 cp -vf ./keepalived/slave_aws.sh /etc/keepalived
 chmod 755 /etc/keepalived/slave_aws.sh
+python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
+                                  --search="#AUTO_REPLACE_SERVER_2" \
+                                  --replace=$SLAVE_IP
+python ../helpers/auto_replace.py --file=/etc/keepalived/slave_aws.sh \
+                                  --search="#AUTO_REPLACE_EIP" \
+                                  --replace=$ELASTIC_IP
+python ../helpers/auto_replace.py --file=/etc/keepalived/slave_aws.sh \
+                                  --search="#AUTO_REPLACE_INSTANCE_ID" \
+                                  --replace=$AWS_ID
 
 # Generate the initial mongo data set
 pushd .

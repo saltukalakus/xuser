@@ -82,3 +82,8 @@ def aws_configure_slave():
 @with_settings(warn_only=True)
 def aws_configure_master():
     sudo('aws configure', user="root")
+
+@with_settings(warn_only=True)
+@runs_once
+def aws_eu_central_1():
+    local('aws ec2 describe-instances --region eu-central-1')
