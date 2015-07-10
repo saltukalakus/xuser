@@ -84,8 +84,8 @@ mongodb hard nofile 64000 \n \
 mongodb soft nproc  64000 \n \
 mongodb hard nproc  64000 \n"
 
-# Copy config template to project root
-cp -a ../config ../..
+# Copy config_simple template to project root
+cp -a ../config_simple ../..
 
 # Generate the initial mongo data set
 pushd .
@@ -98,14 +98,8 @@ python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace="127.0.0.1"
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
-                                  --search="#AUTO_REPLACE_SERVER_2" \
-                                  --replace="127.0.0.1"
-python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_PORT_1" \
                                   --replace="27001"
-python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
-                                  --search="#AUTO_REPLACE_PORT_2" \
-                                  --replace="27002"
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/inet.js \
                                   --search="#AUTO_REPLACE_SERVER_IP" \
                                   --replace="127.0.0.1"
