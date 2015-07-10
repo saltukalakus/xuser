@@ -3,8 +3,8 @@ from fabric.api import *
 #
 # Configurations
 #
-master_ip = '52.28.185.233'
-slave_ip = '52.28.90.184'
+master_ip = '52.28.188.178'
+slave_ip = '52.28.178.87'
 env.user = 'ubuntu'
 env.key_filename = '/home/keys/key.pem'
 
@@ -26,16 +26,24 @@ def git_pull():
 
 @hosts(master_ip)
 @with_settings(warn_only=True)
-def install_master(secret, lmaster_ip, lslave_ip):
+def install_master(secret, aws_id_master, lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
-        execute = './install_master.sh' + ' ' + secret + ' ' + lmaster_ip + ' ' + lslave_ip
+        execute = './install_master.sh' + ' ' \
+                              + secret + ' ' \
+                              + aws_id_master + ' ' \
+                              + lmaster_ip + ' ' \
+                              + lslave_ip
         sudo(execute, user="root")
 
 @hosts(slave_ip)
 @with_settings(warn_only=True)
-def install_slave(secret, lmaster_ip, lslave_ip):
+def install_slave(secret, aws_id_slave, lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
-        execute = './install_slave.sh' + ' ' + secret + ' ' + lmaster_ip + ' ' + lslave_ip
+        execute = './install_slave.sh' + ' ' \
+                              + secret + ' ' \
+                              + aws_id_slave + ' ' \
+                              + lmaster_ip + ' ' \
+                              + lslave_ip
         sudo(execute, user="root")
 
 @with_settings(warn_only=True)
@@ -87,3 +95,19 @@ def aws_configure_master():
 @runs_once
 def aws_eu_central_1():
     local('aws ec2 describe-instances --region eu-central-1')
+
+def find_master_slave_ips():
+    # TODO: from aws instance description gather below information for a group
+    # TODO: Update the rest of the functions after this is implemented.
+    #local_ip_list =[]
+    #env.hosts = [master_ip, slave_ip]
+    #master_ip
+    #slave_ip
+    #lmaster_ip
+    #lslave_ip
+    pass
+
+def install_all():
+    # TODO: Implement
+    # Cover script which uses above all to install in a clean first time
+    pass
