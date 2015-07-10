@@ -29,7 +29,7 @@ popd
 # Install keepalived
 pushd .
 cd ./keepalived
-. install_aws.sh
+. install.sh
 popd
 
 # Nginx

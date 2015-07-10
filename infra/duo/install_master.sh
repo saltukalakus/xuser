@@ -45,23 +45,34 @@ python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
 initctl reload-configuration
 
 # Keepalived conf scripts
-ELASTIC_IP='52.28.178.87'
-mkdir -p /etc/keepalived
-cp -vf ./keepalived/keepalived_master_aws.conf /etc/keepalived/keepalived.conf
-cp -vf ./keepalived/master_aws.sh /etc/keepalived
-chmod 755 /etc/keepalived/master_aws.sh
-python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
-                                  --search="#AUTO_REPLACE_SERVER_1" \
-                                  --replace=$MASTER_IP
-python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
-                                  --search="#AUTO_REPLACE_SERVER_2" \
-                                  --replace=$SLAVE_IP
-python ../helpers/auto_replace.py --file=/etc/keepalived/master_aws.sh \
-                                  --search="#AUTO_REPLACE_EIP" \
-                                  --replace=$ELASTIC_IP
-python ../helpers/auto_replace.py --file=/etc/keepalived/master_aws.sh \
-                                  --search="#AUTO_REPLACE_INSTANCE_ID" \
-                                  --replace=$AWS_ID
+if [ $AWS_ID -ne 0 ]; then
+    echo "Keepalived AWS mode enabled"
+    pushd .
+    cd ./keepalived
+    . install_aws.sh
+    popd
+    ELASTIC_IP='52.28.178.87'
+    mkdir -p /etc/keepalived
+    cp -vf ./keepalived/keepalived_master_aws.conf /etc/keepalived/keepalived.conf
+    cp -vf ./keepalived/master_aws.sh /etc/keepalived
+    chmod 755 /etc/keepalived/master_aws.sh
+    python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
+                                      --search="#AUTO_REPLACE_SERVER_1" \
+                                      --replace=$MASTER_IP
+    python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
+                                      --search="#AUTO_REPLACE_SERVER_2" \
+                                      --replace=$SLAVE_IP
+    python ../helpers/auto_replace.py --file=/etc/keepalived/master_aws.sh \
+                                      --search="#AUTO_REPLACE_EIP" \
+                                      --replace=$ELASTIC_IP
+    python ../helpers/auto_replace.py --file=/etc/keepalived/master_aws.sh \
+                                      --search="#AUTO_REPLACE_INSTANCE_ID" \
+                                     --replace=$AWS_ID
+else
+    echo "Keepalived virtual IP cluster mode enabled"
+    mkdir -p /etc/keepalived
+    cp -vf ./keepalived/keepalived_master.conf /etc/keepalived/keepalived.conf
+fi
 
 # Generate the initial mongodb data set
 pushd .
