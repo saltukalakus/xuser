@@ -8,4 +8,4 @@ if [ $(id -u) != "0" ]
 fi
 
 apt-get install tcpdump
-tcpdump "ip proto 112"
+tcpdump -i eth1 "ip proto 112"
