@@ -3,14 +3,16 @@ from fabric.api import *
 #
 # Configurations
 #
-master_ip = '52.28.188.178'
-slave_ip = '52.28.178.87'
+master_ip = '52.28.157.247'
+slave_ip = '52.28.193.180'
+monitor_ip = '52.28.193.20'
+
 env.user = 'ubuntu'
 env.key_filename = '/home/keys/key.pem'
 
 
 local_ip_list =[]
-env.hosts = [master_ip, slave_ip]
+env.hosts = [master_ip, slave_ip, monitor_ip]
 
 @parallel
 @with_settings(warn_only=True)
@@ -26,24 +28,34 @@ def git_pull():
 
 @hosts(master_ip)
 @with_settings(warn_only=True)
-def install_master(secret, aws_id_master, lmaster_ip, lslave_ip):
+def install_master(secret, aws_id_master, lmaster_ip, lslave_ip, lmonitor_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
         execute = './install_master.sh' + ' ' \
                               + secret + ' ' \
                               + aws_id_master + ' ' \
                               + lmaster_ip + ' ' \
-                              + lslave_ip
+                              + lslave_ip + ' ' \
+                              + lmonitor_ip
         sudo(execute, user="root")
 
 @hosts(slave_ip)
 @with_settings(warn_only=True)
-def install_slave(secret, aws_id_slave, lmaster_ip, lslave_ip):
+def install_slave(secret, aws_id_slave, lmaster_ip, lslave_ip, lmonitor_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
         execute = './install_slave.sh' + ' ' \
                               + secret + ' ' \
                               + aws_id_slave + ' ' \
                               + lmaster_ip + ' ' \
-                              + lslave_ip
+                              + lslave_ip + ' ' \
+                              + lmonitor_ip
+        sudo(execute, user="root")
+
+@hosts(monitor_ip)
+@with_settings(warn_only=True)
+def install_monitor(lmaster_ip):
+    with cd('/home/ubuntu/xuser/infra/duo'):
+        execute = './install_monitor.sh' + ' ' \
+                              + lmaster_ip + ' '
         sudo(execute, user="root")
 
 @with_settings(warn_only=True)
