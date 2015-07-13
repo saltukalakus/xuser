@@ -9,6 +9,7 @@ fi
 
 MASTER_IP=$1
 SLAVE_IP=$2
+MONITOR_IP=$3
 
 # remove password for mongodb user
 passwd mongodb -d
@@ -31,8 +32,11 @@ python ../../helpers/auto_replace.py --file=/data-mongodb/init.js \
                                      --search="#AUTO_REPLACE_SERVER_2" \
                                      --replace=$SLAVE_IP
 
+python ../../helpers/auto_replace.py --file=/data-mongodb/init.js \
+                                     --search="#AUTO_REPLACE_SERVER_3" \
+                                     --replace=$MONITOR_IP
+
 mkdir -p /data-mongodb/rs0-1
-mkdir -p /data-mongodb/rs0-2
 mkdir -p /var/log/mongodb
 
 ln -svf /data-mongodb/start.sh /usr/local/bin/mongodb-start.sh

@@ -7,8 +7,8 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
-if [ "$#" -ne 4 ]; then
-    echo "USAGE: ./install_master.sh SECRET AWS_ID_OF_MASTER MASTER_IP SLAVE_IP"
+if [ "$#" -ne 5 ]; then
+    echo "USAGE: ./install_master.sh SECRET AWS_ID_OF_MASTER MASTER_IP SLAVE_IP MONITOR_IP"
     exit 1
 fi
 
@@ -18,6 +18,7 @@ SECRET=$1
 AWS_ID=$2
 MASTER_IP=$3
 SLAVE_IP=$4
+MONITOR_IP=$5
 
 pushd .
 cd ../..
@@ -37,7 +38,6 @@ rm -Rf /etc/init/redis* \
        /etc/init/haproxy* \
        /etc/init/nginx*
 cp -fv ./upstart/* /etc/init
-cp -fv ./upstart/master/* /etc/init
 python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
                                   --search="#AUTO_REPLACE_PR_PATH" \
                                   --replace=$PROJECT_PATH
@@ -77,7 +77,7 @@ fi
 # Generate the initial mongodb data set
 pushd .
 cd ./mongodb_master
-. init.sh $MASTER_IP $SLAVE_IP
+. init.sh $MASTER_IP $SLAVE_IP $MONITOR_IP
 popd
 
 # Update the application config settings
@@ -93,24 +93,26 @@ python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/database.js \
                                   --search="#AUTO_REPLACE_PORT_2" \
                                   --replace="27001"
+
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/inet.js \
                                   --search="#AUTO_REPLACE_SERVER_IP" \
                                   --replace=$MASTER_IP
+
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_HOST1" \
                                   --replace=$MASTER_IP
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_HOST2" \
-                                  --replace=$MASTER_IP
+                                  --replace=$SLAVE_IP
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_HOST3" \
-                                  --replace=$SLAVE_IP
+                                  --replace=$MONITOR_IP
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_PORT1" \
                                   --replace="26379"
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_PORT2" \
-                                  --replace="26380"
+                                  --replace="26379"
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_PORT3" \
                                   --replace="26379"
@@ -120,6 +122,7 @@ python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/session.js \
                                   --search="#AUTO_REPLACE_SESSION_SECRET" \
                                   --replace=$SECRET
+
 python ../helpers/auto_replace.py --file=$PROJECT_PATH/config/token.js \
                                   --search="#AUTO_REPLACE_TOKEN_SECRET" \
                                   --replace=$SECRET
