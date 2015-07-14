@@ -23,6 +23,12 @@ popd
 echo "Project path:"
 echo $PROJECT_PATH
 
+# Add repositories for mongo and redis
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+add-apt-repository -y ppa:rwky/redis
+apt-get -y update
+
 # Install Redis
 apt-get -y install redis-server
 
@@ -68,7 +74,9 @@ rm -Rf /etc/init/redis* \
        /etc/init/haproxy* \
        /etc/init/nginx*
 cp -fv ./upstart/mongod-* /etc/init
+cp -fv ./upstart/mongod.conf /etc/init
 cp -fv ./upstart/sentinel-* /etc/init
+cp -fv ./upstart/sentinel.conf /etc/init
 
 initctl reload-configuration
 

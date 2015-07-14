@@ -29,7 +29,7 @@ def git_pull():
 @hosts(master_ip)
 @with_settings(warn_only=True)
 def install_master(secret, aws_id_master, lmaster_ip, lslave_ip, lmonitor_ip):
-    with cd('/home/ubuntu/xuser/infra/duo'):
+    with cd('/home/ubuntu/xuser/infra/duo_m'):
         execute = './install_master.sh' + ' ' \
                               + secret + ' ' \
                               + aws_id_master + ' ' \
@@ -41,7 +41,7 @@ def install_master(secret, aws_id_master, lmaster_ip, lslave_ip, lmonitor_ip):
 @hosts(slave_ip)
 @with_settings(warn_only=True)
 def install_slave(secret, aws_id_slave, lmaster_ip, lslave_ip, lmonitor_ip):
-    with cd('/home/ubuntu/xuser/infra/duo'):
+    with cd('/home/ubuntu/xuser/infra/duo_m'):
         execute = './install_slave.sh' + ' ' \
                               + secret + ' ' \
                               + aws_id_slave + ' ' \
@@ -53,7 +53,7 @@ def install_slave(secret, aws_id_slave, lmaster_ip, lslave_ip, lmonitor_ip):
 @hosts(monitor_ip)
 @with_settings(warn_only=True)
 def install_monitor(lmaster_ip):
-    with cd('/home/ubuntu/xuser/infra/duo'):
+    with cd('/home/ubuntu/xuser/infra/duo_m'):
         execute = './install_monitor.sh' + ' ' \
                               + lmaster_ip + ' '
         sudo(execute, user="root")
