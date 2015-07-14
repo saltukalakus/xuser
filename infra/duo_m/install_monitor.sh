@@ -29,6 +29,10 @@ echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.
 add-apt-repository -y ppa:rwky/redis
 apt-get -y update
 
+# Helpers
+apt-get -y install python-pip
+pip install docopt
+
 # Install Redis
 apt-get -y install redis-server
 
