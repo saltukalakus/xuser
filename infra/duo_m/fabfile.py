@@ -3,9 +3,9 @@ from fabric.api import *
 #
 # Configurations
 #
-master_ip = '52.28.178.87'
-slave_ip = '52.28.198.19'
-monitor_ip = '52.28.193.20'
+master_ip = '52.28.116.85'
+slave_ip = '52.28.119.224'
+monitor_ip = '52.28.54.194'
 
 env.user = 'ubuntu'
 env.key_filename = '/home/keys/key.pem'

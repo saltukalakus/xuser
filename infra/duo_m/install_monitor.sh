@@ -79,7 +79,7 @@ rm -Rf /etc/init/redis* \
        /etc/init/nginx*
 cp -fv ./upstart/mongod-* /etc/init
 cp -fv ./upstart/mongod.conf /etc/init
-cp -fv ./upstart/sentinel-* /etc/init
+cp -fv ./upstart/monitor/sentinel-* /etc/init
 cp -fv ./upstart/sentinel.conf /etc/init
 
 initctl reload-configuration
@@ -94,6 +94,9 @@ popd
 mkdir -p /var/log/redis
 cp -fv ./redis_monitor/*.conf /etc/redis
 python ../helpers/auto_replace.py --file=/etc/redis/sentinel-26379.conf \
+                                  --search="#AUTO_REPLACE_SERVER_1" \
+                                  --replace=$MASTER_IP
+python ../helpers/auto_replace.py --file=/etc/redis/sentinel-26380.conf \
                                   --search="#AUTO_REPLACE_SERVER_1" \
                                   --replace=$MASTER_IP
 chown redis:redis /etc/redis/*.conf
