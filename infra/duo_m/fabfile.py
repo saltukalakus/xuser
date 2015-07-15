@@ -3,8 +3,8 @@ from fabric.api import *
 #
 # Configurations
 #
-master_ip = '52.28.157.247'
-slave_ip = '52.28.193.180'
+master_ip = '52.28.178.87'
+slave_ip = '52.28.198.19'
 monitor_ip = '52.28.193.20'
 
 env.user = 'ubuntu'
