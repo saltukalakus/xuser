@@ -45,7 +45,7 @@ python ../helpers/auto_replace.py --file=/etc/init/nodejs-instance.conf \
 initctl reload-configuration
 
 # Keepalived conf scripts
-if [ $AWS_ID -ne 0 ]; then
+if [ $AWS_ID != "0" ]; then
     echo "Keepalived AWS cluster mode enabled"
     pushd .
     cd ./keepalived
