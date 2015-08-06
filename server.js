@@ -8,6 +8,7 @@ var port     = process.env.PORT || 8081;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
+var exec     = require('child_process').exec;
 
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -68,6 +69,26 @@ app.use(allowCrossDomain);
 // routes ======================================================================
 require('./app/routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
+// Catch uncaught exceptions
+process.on('uncaughtException', function(err) {
+  console.log('Caught exception: ' + err);
+  
+  if ( err.toString().trim() == "Error: No valid replicaset instance servers found" ){
+      console.log("Execute mongo cluster init")
+      var child = exec('mongodb-configure.sh',
+                       function (error, stdout, stderr) {
+                           if (error !== null) {
+                                console.log('exec error: ' + error);
+                            }
+                           if (stdout !== null) {
+                                console.log('exec stdout: ' + stdout);
+                           }
+                           if (stderr !== null) {
+                                console.log('exec stderr: ' + stderr);
+                           }
+                        });
+  }
+});
 // launch ======================================================================
 app.listen(port, inetConf.addr);
 console.log('The magic happens on port ' + port + ' at ' + inetConf.addr);

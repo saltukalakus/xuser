@@ -7,8 +7,8 @@ if [ $(id -u) != "0" ]
         exit $?
 fi
 
-if [ "$#" -ne 4 ]; then
-    echo "USAGE: ./install_master.sh SECRET AWS_ID_OF_MASTER MASTER_IP SLAVE_IP"
+if [ "$#" -ne 5 ]; then
+    echo "USAGE: ./install_master.sh SECRET AWS_ID_OF_MASTER VIRTUAL_IP MASTER_IP SLAVE_IP"
     exit 1
 fi
 
@@ -16,8 +16,9 @@ fi
 # ===============
 SECRET=$1
 AWS_ID=$2
-MASTER_IP=$3
-SLAVE_IP=$4
+VIRTUAL_IP=$3
+MASTER_IP=$4
+SLAVE_IP=$5
 
 pushd .
 cd ../..
@@ -51,7 +52,6 @@ if [ $AWS_ID != "0" ]; then
     cd ./keepalived
     . install_aws.sh
     popd
-    ELASTIC_IP='52.28.178.87'
     mkdir -p /etc/keepalived
     cp -vf ./keepalived/keepalived_master_aws.conf /etc/keepalived/keepalived.conf
     cp -vf ./keepalived/master_aws.sh /etc/keepalived
@@ -64,7 +64,7 @@ if [ $AWS_ID != "0" ]; then
                                       --replace=$SLAVE_IP
     python ../helpers/auto_replace.py --file=/etc/keepalived/master_aws.sh \
                                       --search="#AUTO_REPLACE_EIP" \
-                                      --replace=$ELASTIC_IP
+                                      --replace=$VIRTUAL_IP
     python ../helpers/auto_replace.py --file=/etc/keepalived/master_aws.sh \
                                       --search="#AUTO_REPLACE_INSTANCE_ID" \
                                      --replace=$AWS_ID
@@ -72,6 +72,9 @@ else
     echo "Keepalived virtual IP cluster mode enabled"
     mkdir -p /etc/keepalived
     cp -vf ./keepalived/keepalived_master.conf /etc/keepalived/keepalived.conf
+    python ../helpers/auto_replace.py --file=/etc/keepalived/keepalived.conf \
+                                  --search="#AUTO_REPLACE_VIRTUAL_IP" \
+                                  --replace=$VIRTUAL_IP
 fi
 
 # Generate the initial mongodb data set

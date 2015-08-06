@@ -26,22 +26,24 @@ def git_pull():
 
 @hosts(master_ip)
 @with_settings(warn_only=True)
-def install_master(secret, aws_id_master, lmaster_ip, lslave_ip):
+def install_master(secret, aws_id_master, virtual_ip, lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
         execute = './install_master.sh' + ' ' \
                               + secret + ' ' \
                               + aws_id_master + ' ' \
+                              + virtual_ip + ' ' \
                               + lmaster_ip + ' ' \
                               + lslave_ip
         sudo(execute, user="root")
 
 @hosts(slave_ip)
 @with_settings(warn_only=True)
-def install_slave(secret, aws_id_slave, lmaster_ip, lslave_ip):
+def install_slave(secret, aws_id_slave, virtual_ip, lmaster_ip, lslave_ip):
     with cd('/home/ubuntu/xuser/infra/duo'):
         execute = './install_slave.sh' + ' ' \
                               + secret + ' ' \
                               + aws_id_slave + ' ' \
+                              + virtual_ip + ' ' \
                               + lmaster_ip + ' ' \
                               + lslave_ip
         sudo(execute, user="root")
